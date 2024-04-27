@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First set up your db credentials by copying `.env.template` and renaming it `.env` and filling out the dummy data.
+
+If you do not have docker installed, now is the time to do so. You can start [here](https://docs.docker.com/get-docker/).
+
+Next run `npm run start-db` to start the db service.
+
+Now run `npm dev` to start the Next App
 
 ```bash
 npm run dev

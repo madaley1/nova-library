@@ -1,0 +1,30 @@
+services: 
+  db: 
+    image: mysql:5.7
+    container_name: db
+    restart: always
+    env_file:  .env
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports: 
+      - ${MYSQL_PORT}:3306
+    volumes: 
+      - ./db:/var/lib/mysql
+  db-workbench: 
+    image: lscr.io/linuxserver/mysql-workbench:latest
+    container_name: db-workbench
+    restart: always
+    env_file:  .env
+    environment: 
+      PUID: 1000
+      PGID: 1000
+      TZ: Etc/UTC
+    ports: 
+      - ${MYSQL_WORKBENCH_PORT}:3000
+    cap_add:
+      - IPC_LOCK
+    volumes: 
+      - ./db:/var/lib/mysql
