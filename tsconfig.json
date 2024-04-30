@@ -22,7 +22,10 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -34,5 +37,6 @@
 , "src/libraries/menu.cjs"  ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  
 }
