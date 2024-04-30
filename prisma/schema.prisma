@@ -12,3 +12,75 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+enum movieAgeRating {
+  PG_13
+  R
+  PG
+  G
+  NR
+}
+
+enum tvShowAgeRating {
+  TV_Y
+  TV_Y7
+  TV_G
+  TV_PG
+  TV_14
+  TV_MA
+}
+
+enum gameAgeRating {
+  E
+  E10
+  T
+  M
+  AO
+  RP
+}
+
+enum gamePlatformManufacturers {
+  NINTENDO
+  SONY
+  MICROSOFT
+}
+
+model gamePlatforms {
+  id           String                    @id @default(cuid())
+  manufacturer gamePlatformManufacturers
+  platform     String
+}
+
+model media {
+  uid   String   @id @default(cuid())
+  title String
+  year  DateTime
+}
+
+model books {
+  uid   String   @id @default(cuid())
+  isbn  String
+  title String
+  year  DateTime
+}
+
+model movies {
+  uid       String          @id @default(cuid())
+  title     String
+  year      DateTime
+  ageRating movieAgeRating?
+}
+
+model shows {
+  uid       String           @id @default(cuid())
+  title     String
+  year      DateTime
+  ageRating tvShowAgeRating?
+}
+
+model games {
+  uid       String         @id @default(cuid())
+  title     String
+  year      DateTime
+  ageRating gameAgeRating?
+}
