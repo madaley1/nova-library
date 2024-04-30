@@ -1,3 +1,4 @@
+version: '0.1'
 services: 
   db: 
     image: mysql:5.7
@@ -22,8 +23,12 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: Etc/UTC
+      TITLE: Nova Library DB Workbench
+      CUSTOM_USER: ${MYSQL_USER}
+      CUSTOM_PASSWORD: ${MYSQL_PASSWORD}
     ports: 
       - ${MYSQL_WORKBENCH_PORT}:3000
+      - ${MYSQL_WORKBENCH_PORT_SECURE}:3001
     cap_add:
       - IPC_LOCK
     volumes: 
