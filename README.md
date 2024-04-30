@@ -8,7 +8,7 @@ If you do not have docker installed, now is the time to do so. You can start [he
 
 Next run `npm run start-db` to start the db service.
 
-Now run `npm dev` to start the Next App
+Now run `npm run dev` to start the Next App
 
 ```bash
 npm run dev
