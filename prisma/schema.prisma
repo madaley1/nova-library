@@ -52,34 +52,34 @@ model gamePlatforms {
 }
 
 model media {
-  uid   String   @id @default(cuid())
+  id    String   @id @default(cuid())
   title String
   year  DateTime
 }
 
 model books {
-  uid   String   @id @default(cuid())
+  id    String   @id @default(cuid())
   isbn  String
   title String
   year  DateTime
 }
 
 model movies {
-  uid       String          @id @default(cuid())
+  id        String          @id @default(cuid())
   title     String
   year      DateTime
   ageRating movieAgeRating?
 }
 
 model shows {
-  uid       String           @id @default(cuid())
+  id        String           @id @default(cuid())
   title     String
   year      DateTime
   ageRating tvShowAgeRating?
 }
 
 model games {
-  uid       String         @id @default(cuid())
+  id        String         @id @default(cuid())
   title     String
   year      DateTime
   ageRating gameAgeRating?
