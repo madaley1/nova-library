@@ -1,8 +1,0 @@
-:root{
-  --html-bg: #868686;
-}
-
-
-html,body{
-  background-color: var(--html-bg);
-}

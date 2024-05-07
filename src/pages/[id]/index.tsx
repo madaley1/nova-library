@@ -1,11 +1,8 @@
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { log } from 'console';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  const response = await fetch(`${process.env.URL}/api/books`);
+  const response = await fetch(`${process.env.URL}/api/${id}`);
   const data = await response.json();
   return {
     props: { data },
