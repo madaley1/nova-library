@@ -3,9 +3,9 @@ import Layout from '@/components/Layout';
 import { StrictMode, useEffect } from 'react';
 
 import userSettings from '@/resources/store';
+import '@/styles/globals.scss';
 import type { AppProps } from 'next/app';
-import { Provider, useDispatch } from 'react-redux';
-import './globals.css';
+import { Provider } from 'react-redux';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
