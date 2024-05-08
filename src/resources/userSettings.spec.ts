@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 
-import userSettings, { setDarkMode, toggleDarkMode } from "./userSettings";
+import userSettings, { setDarkMode, toggleDarkMode } from './userSettings';
 
 describe('userSettings', () => {
   test('toggleDarkMode', () => {

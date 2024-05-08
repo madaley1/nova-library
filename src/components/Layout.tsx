@@ -24,6 +24,7 @@ export default function RootLayout({
       dispatch(setExistingUserSettings(existingSettings));
     }
   }, []);
+
   const darkModeState = useSelector((state: userSettingsState) => state.userSettings.darkMode);
 
   return (
