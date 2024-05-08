@@ -1,4 +1,6 @@
 import { EditRowModal } from '@/components/libraryComponents/EditRow';
+import { setResourceData } from '@/resources/resourceData';
+import store from '@/resources/store';
 import { Button, Grid } from '@mui/material';
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { NextPageContext } from 'next';
@@ -8,6 +10,7 @@ export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
   const response = await fetch(`${process.env.URL}/api/${id}`);
   const data = await response.json();
+  store.dispatch(setResourceData(data));
   return {
     props: { data },
   };

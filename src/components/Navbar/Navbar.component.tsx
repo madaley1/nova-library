@@ -24,7 +24,11 @@ const Navbar = () => {
 
       <Box>
         <Menu open={settingsOpen} onClose={closeMenu}>
-          <MenuItem onClick={() => dispatch(toggleDarkMode())}>
+          <MenuItem
+            onClick={() => {
+              dispatch(toggleDarkMode());
+            }}
+          >
             <ListItemIcon>
               <Brightness4Icon />
             </ListItemIcon>

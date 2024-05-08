@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
+import resourceData from './resourceData';
 import userSettings from './userSettings';
 
 const store = configureStore({
   devTools: true,
   reducer: {
     userSettings,
+    resourceData,
   },
 });
 
-store.subscribe(() => {
-  localStorage.setItem('NL__userSettings', JSON.stringify(store.getState().userSettings));
-});
+store.subscribe(() => {});
 
 export default store;
