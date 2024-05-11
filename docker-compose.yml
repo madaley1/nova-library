@@ -2,6 +2,7 @@ version: '0.1'
 services: 
   db: 
     image: mysql:5.7
+    platform: linux/x86_64
     container_name: db
     restart: always
     env_file:  .env
