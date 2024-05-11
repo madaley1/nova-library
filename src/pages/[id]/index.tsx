@@ -34,7 +34,6 @@ export default function Index({ data }: Record<string, any>) {
     renderCell: (params: GridCellParams) => {
       const onClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log(e, params);
         openEditModal();
       };
       return (
