@@ -7,8 +7,8 @@ import { NextPageContext } from 'next';
 import React, { useState } from 'react';
 
 export async function getServerSideProps(context: NextPageContext) {
-  const { id } = context.query;
-  const response = await fetch(`${process.env.URL}/api/${id}`);
+  const { resourceId } = context.query;
+  const response = await fetch(`${process.env.URL}/api/${resourceId}`);
   const data = await response.json();
   store.dispatch(setResourceData(data));
   return {
