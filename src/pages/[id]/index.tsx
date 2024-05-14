@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
-  const response = await fetch(`${process.env.URL}/api/${id}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${id}`);
   const data = await response.json();
   store.dispatch(setResourceData(data));
   return {
