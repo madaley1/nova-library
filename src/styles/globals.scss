@@ -1,3 +1,7 @@
 html, body, #__next{
   height: 100%;
 }
+
+.MuiDataGrid-columnHeaderTitle{
+  text-transform: capitalize;
+}
