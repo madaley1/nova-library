@@ -2,7 +2,6 @@ import { EditRowModal } from '@/components/libraryComponents/EditRow';
 import { setResourceData } from '@/resources/resourceData';
 import store from '@/resources/store';
 import { Button, Grid } from '@mui/material';
-import { idID } from '@mui/material/locale';
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
@@ -20,6 +19,7 @@ export async function getServerSideProps(context: NextPageContext) {
 export default function Index({ data }: Record<string, any>) {
   const [currentData, setCurrentData] = useState(data);
   const [editModalOpen, setEditModalOpen] = useState(false);
+
   const openEditModal = () => {
     setEditModalOpen(true);
   };
