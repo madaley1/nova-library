@@ -31,10 +31,10 @@ export default function RootLayout({
     <ThemeProvider theme={getTheme(darkModeState)}>
       <CssBaseline />
       <Grid container spacing={2} sx={{ paddingTop: '1em', height: '100%' }}>
-        <Grid item xs={1}>
+        <Grid item xs={1.5}>
           <Navbar />
         </Grid>
-        <Grid item xs={11}>
+        <Grid item xs={10.5}>
           <main style={{ flexShrink: 0, flexGrow: 1, margin: '0 1em' }}>{children}</main>
         </Grid>
       </Grid>
