@@ -1,3 +1,4 @@
+import { AddNewLibraryModal } from '@/components/libraryComponents/AddNewLibrary';
 import { NavLink, setNavData } from '@/resources/navData';
 import store, { IRootState } from '@/resources/store';
 import { toggleDarkMode } from '@/resources/userSettings';
@@ -7,7 +8,6 @@ import Settings from '@mui/icons-material/Settings';
 import { Box, Button, Container, Link, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddNewLibraryModal } from '../libraryComponents/AddNewLibrary';
 import style from './Navbar.module.scss';
 
 const Navbar = () => {

@@ -1,23 +1,27 @@
-export interface genericLibrary {
+interface genericLibrary {
   title: string;
   dateReleased: Date;
   genre: string[];
   [key: string]: any;
 }
 
-export interface bookLibrary extends genericLibrary {
+interface bookLibrary extends genericLibrary {
   isbn: string;
 }
-export interface movieLibrary extends genericLibrary {
+interface movieLibrary extends genericLibrary {
   rating: string;
 }
-export interface tvShowLibrary extends genericLibrary {
+interface tvShowLibrary extends genericLibrary {
   rating: string;
 }
-export interface videoGameibrary extends genericLibrary {
+interface videoGameLibrary extends genericLibrary {
   rating: string;
 }
 
-export const createNewLibrary = () => {
-  return;
-};
+export type { bookLibrary, genericLibrary, movieLibrary, tvShowLibrary, videoGameLibrary };
+
+
+// const createNewLibrary = () => {
+//   return;
+// };
+
