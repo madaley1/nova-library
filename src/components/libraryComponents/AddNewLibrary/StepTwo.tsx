@@ -8,7 +8,6 @@ type StepTwoProps = {
 const StepTwo = (props: StepTwoProps) => {
   return (
     <Container sx={{display: `${props.active ? 'block': 'none'}`}}>
-      <Typography variant="h3">Create Library - Customize Library</Typography>
       <Grid container>
         <Grid item>
           <Typography></Typography>

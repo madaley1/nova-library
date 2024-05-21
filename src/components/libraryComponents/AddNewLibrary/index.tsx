@@ -31,7 +31,13 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
   const headerContent = (
     <>
       <Typography variant="h5" component="h2">
-        Add New Library
+        Add New Library{
+          (function(){
+            if(stepOneActive) return ' - Select Template'
+            if(stepTwoActive) return ' - Customize Library'
+            if(stepThreeActive) return ' - Confirm Library'
+          })()
+        }
       </Typography>
     </>
   );
