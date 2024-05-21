@@ -11,7 +11,6 @@ const StepOne = (props: StepOneProps) => {
   const formData = useContext(AddNewLibraryContext)
   return (
     <Container sx={{display: `${props.active ? 'block': 'none'}`}}>
-      <Typography variant="h4" sx={{marginBottom: '1em'}}>Create Library - Select Template</Typography>
       <Typography variant="h5" sx={{marginBottom: '1em'}}>Select Desired Template</Typography>
       <Container>
         <Grid container sx={{marginBottom: '1em'}}>
