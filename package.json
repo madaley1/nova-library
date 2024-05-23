@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start-db": "docker compose up -d",
+    "start-db": "sh ./dbSetup.sh",
     "stop-db": "docker compose down",
-    "dev": "next dev",
+    "dev": "docker compose up -d && next dev",
     "build": "next build",
     "start": "next start",
     "test": "jest",

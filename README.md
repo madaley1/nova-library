@@ -6,9 +6,9 @@ First set up your db credentials by copying `.env.template` and renaming it `.en
 
 If you do not have docker installed, now is the time to do so. You can start [here](https://docs.docker.com/get-docker/).
 
-Next run `npm run start-db` to start the db service.
+Next run `npm run start-db` to create & start the db service for the first time. If you have already started it before this should not be necessary.
 
-Now run `npm run dev` to start the Next App
+Now run `npm run dev` to start the Next App and start the services if they are stopped.
 
 ```bash
 npm run dev
@@ -21,10 +21,6 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## Learn More
 
