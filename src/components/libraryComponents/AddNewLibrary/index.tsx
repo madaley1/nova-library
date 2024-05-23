@@ -1,7 +1,10 @@
 import Modal from '@/components/Modal';
+import { setTemplates } from '@/resources/libraryData';
 import styles from '@/styles/modal.module.scss';
+import { libraryTemplate } from '@/utils/libraries/templates';
 import { Box, Button, Typography, useScrollTrigger } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { AddNewLibraryContext } from './AddNewLibraryContext';
 import StepOne from './StepOne';
 import StepThree from './StepThree';
@@ -17,6 +20,7 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
   const [stepTwoActive, setStepTwoActive] = useState(false)
   const [stepThreeActive, setStepThreeActive] = useState(false)
 
+  const dispatch = useDispatch();
 
   const continueToStepTwo = () => {
     setStepOneActive(false)
@@ -49,6 +53,20 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
     </AddNewLibraryContext.Provider>
   );
   const footerContent = <></>;
+
+  useEffect(()=>{
+    fetch(`${process.env.NEXT_PUBLIC_URL}/api/libraries/create`)
+      .then(async (response)=>{
+        const templateJSON = await response.json();
+        console.log(templateJSON)
+        const procesedTemplates: libraryTemplate[] = templateJSON.map((template)=>{
+          const {title, fields} = template
+          return {title, fields: JSON.parse(fields)}
+        })
+        dispatch(setTemplates(procesedTemplates))
+      })
+      .catch((err)=>console.error(err));
+  }, [])
 
   return (
     <Modal
