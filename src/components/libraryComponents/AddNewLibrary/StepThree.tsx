@@ -13,7 +13,6 @@ const StepThree = (props: StepThreeProps) => {
       {(value) => {
         if (value === null) return <>Something has gone wrong, please reload and try again</>;
         const [state, dispatch] = value;
-        console.log(state.fields);
         const rows = Object.entries(state.fields)
           .filter((entry) => entry[0] !== 'id')
           .map((field) => {
@@ -54,12 +53,10 @@ const StepThree = (props: StepThreeProps) => {
               <Button onClick={props.goBackFunction}>Back</Button>
               <Button
                 onClick={async () => {
-                  console.log(state);
                   const rawResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/libraries/create`, {
                     method: 'POST',
                     body: JSON.stringify(state),
                   });
-                  console.log(`${window.location.origin}/${state.title}`);
                   if (rawResponse.status === 200) window.location.href = `${window.location.origin}/${state.title}`;
                 }}
               >

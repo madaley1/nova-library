@@ -62,7 +62,6 @@ export const useLibraryData = () => {
   if (AddNewLibraryContext === null) throw Error('Context not initialized');
   const [state, dispatch] = useContext(AddNewLibraryContext) as ContextValue;
   const setType = useCallback((newData: AddNewLibraryContextState) => {
-    console.log(newData);
     dispatch({
       type: 'setContext',
       data: newData,

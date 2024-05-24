@@ -75,13 +75,11 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
     fetch(`${process.env.NEXT_PUBLIC_URL}/api/libraries/create`)
       .then(async (response) => {
         const templateJSON = await response.json();
-        // console.log(templateJSON)
         const procesedTemplates: libraryTemplate[] = templateJSON.map((template: any) => {
           const { title, fields } = template;
           return { title, fields: JSON.parse(fields) };
         });
 
-        console.log(procesedTemplates);
         dispatch(setTemplates(procesedTemplates));
       })
       .catch((err) => console.error(err));

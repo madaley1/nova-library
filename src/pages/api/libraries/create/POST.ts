@@ -3,7 +3,6 @@ import { connection } from '@/utils/mysqlConection';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export function postHandler(req: NextApiRequest, res: NextApiResponse) {
-  console.log(JSON.parse(req.body));
   const { title, fields }: libraryTemplate = JSON.parse(req.body);
   const createTable = `CREATE TABLE ${title} `;
   const columns = `(${Object.entries(fields)
@@ -20,7 +19,6 @@ export function postHandler(req: NextApiRequest, res: NextApiResponse) {
       else return `${type}_${column} ${mySqlType(type)}`;
     })
     .join(', ')});`;
-  console.log(createTable + columns);
   const query = createTable + columns;
   return connection.query(query, (error, results, fields) => {
     if (error) res.status(500).json({ message: 'Something went wrong, see error', error });
