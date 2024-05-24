@@ -55,6 +55,7 @@ const StepThree = (props: StepThreeProps) => {
               <Button
                 onClick={() => {
                   console.log(state);
+                  console.log('tempCommit');
                 }}
               >
                 Submit New Library
