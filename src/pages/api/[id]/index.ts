@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { connection } from '@/utils/mysqlConection';
+import { log } from 'console';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
@@ -9,14 +10,24 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const getColumns = () =>
     connection.query(sql_getColumns, (error, rows) => {
       if (error) res.status(500).json({ message: 'An error has ocurred, please see error message', error });
-
-      res.status(200).json(rows);
+      // console.log(rows);
+      const columnNames = rows.map((column: { COLUMN_NAME: string }) => column.COLUMN_NAME);
+      log(columnNames);
+      res.status(200).json({ columnNames, currentData: [] });
     });
   const getTableData = () =>
     connection.query(sql_getTableData, (error, rows) => {
       if (error) res.status(500).json({ message: 'An error has ocurred, please see error message', error });
+      const formatRows = (rows: Record<string, any>) => {
+        const columnNames = Object.keys(rows[0]).map((entry) => {
+          return entry;
+        });
+        const currentData = rows;
+        res.status(200).json({ columnNames, currentData });
+      };
       if (Array.isArray(rows)) {
-        rows.length > 0 ? res.status(200).json(rows) : getColumns();
+        // console.log(rows);
+        rows.length > 0 ? formatRows(rows) : getColumns();
       }
     });
 

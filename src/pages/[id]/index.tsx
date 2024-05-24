@@ -1,16 +1,17 @@
 import { EditRowModal } from '@/components/libraryComponents/EditRow';
-import { setResourceData } from '@/resources/resourceData';
-import store from '@/resources/store';
+import { setColumnNames, setResourceData } from '@/resources/resourceData';
+import store, { IRootState } from '@/resources/store';
 import { Button, Grid } from '@mui/material';
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${id}`);
   const data = await response.json();
-  store.dispatch(setResourceData(data));
+  console.log(data);
   return {
     props: { data },
   };
@@ -19,6 +20,8 @@ export async function getServerSideProps(context: NextPageContext) {
 export default function Index({ data }: Record<string, any>) {
   const [currentData, setCurrentData] = useState(data);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const resourceData = useSelector((state: IRootState) => state.resourceData);
+  const dispatch = useDispatch();
 
   const openEditModal = () => {
     setEditModalOpen(true);
@@ -28,8 +31,14 @@ export default function Index({ data }: Record<string, any>) {
   };
 
   const columns: GridColDef[] =
-    data[0] ? Object.keys(data[0]).map((key) => ({ field: key, headerName: key, hideable: key === 'id' })) : [];
-
+    resourceData.columnNames ?
+      resourceData.columnNames.map((column: string) => ({
+        field: column,
+        headerName: column.split('_').splice(1).join(' '),
+        hideable: column === 'id',
+      }))
+    : [];
+  console.log(columns);
   columns.push({
     field: 'edit',
     headerName: 'Edit',
@@ -48,20 +57,15 @@ export default function Index({ data }: Record<string, any>) {
   });
 
   useEffect(() => {
-    const addIds = () => {
-      columns.unshift({ field: 'id', headerName: 'id', hideable: true });
-      const tempData = currentData.map((row: Record<string, any>, i: number) => ({ ...row, id: i }));
-      setCurrentData(tempData);
-    };
-
-    !columns.find((col) => col.field === 'id') ? addIds() : null;
+    dispatch(setResourceData(data.currentData));
+    dispatch(setColumnNames(data.columnNames));
   }, []);
   return (
     <>
-      {typeof currentData[0]?.id === 'number' ?
+      {resourceData.columnNames ?
         <DataGrid
           columns={columns}
-          rows={currentData}
+          rows={resourceData.currentData}
           slots={{
             toolbar: GridToolbar,
           }}
