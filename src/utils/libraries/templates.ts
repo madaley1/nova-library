@@ -1,23 +1,7 @@
-export interface genericLibrary {
+export const fieldTypes = ['string', 'number', 'date', 'select', 'multiSelect'] as const;
+export type FieldType = (typeof fieldTypes)[number];
+
+export type libraryTemplate = {
   title: string;
-  dateReleased: Date;
-  genre: string[];
-  [key: string]: any;
-}
-
-export interface bookLibrary extends genericLibrary {
-  isbn: string;
-}
-export interface movieLibrary extends genericLibrary {
-  rating: string;
-}
-export interface tvShowLibrary extends genericLibrary {
-  rating: string;
-}
-export interface videoGameibrary extends genericLibrary {
-  rating: string;
-}
-
-export const createNewLibrary = () => {
-  return;
+  fields: Record<string, FieldType>;
 };

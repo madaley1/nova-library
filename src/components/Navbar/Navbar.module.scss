@@ -3,13 +3,15 @@
   flex-flow: column nowrap;
   justify-content: space-between;
   margin: auto;
-  width: 5%;
+  width: auto;
+  max-width: 250px;
   min-width: 125px;
   height: 100%;
   padding-bottom: 5em;
   .LinkBox{
     display: flex;
     flex-flow: column nowrap;
+    width: max-content;
   }
   .options-button{
     background-color: transparent;
