@@ -26,7 +26,7 @@ const StepThree = (props: StepThreeProps) => {
               Library Name:
             </Typography>
             <Typography variant="h6" sx={{ marginBottom: '1em', textTransform: 'capitalize' }}>
-              {state.libraryType}
+              {state.title}
             </Typography>
             <Box sx={{ display: 'flex', flexFlow: 'column', height: 'max-content' }}>
               <Typography variant="h5" sx={{ marginBottom: '1em', textTransform: 'capitalize' }}>
@@ -53,9 +53,14 @@ const StepThree = (props: StepThreeProps) => {
             <ButtonGroup variant="outlined">
               <Button onClick={props.goBackFunction}>Back</Button>
               <Button
-                onClick={() => {
+                onClick={async () => {
                   console.log(state);
-                  console.log('tempCommit');
+                  const rawResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/libraries/create`, {
+                    method: 'POST',
+                    body: JSON.stringify(state),
+                  });
+                  console.log(`${window.location.origin}/${state.title}`);
+                  if (rawResponse.status === 200) window.location.href = `${window.location.origin}/${state.title}`;
                 }}
               >
                 Submit New Library

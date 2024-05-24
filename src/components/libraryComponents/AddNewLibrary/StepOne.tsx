@@ -27,7 +27,7 @@ const StepOne = (props: StepOneProps) => {
                   key={template.title}
                   onClick={() => {
                     setData({
-                      libraryType: template.title,
+                      title: template.title,
                       fields: template.fields,
                     });
                   }}
@@ -41,9 +41,9 @@ const StepOne = (props: StepOneProps) => {
       <Button
         variant="outlined"
         onClick={() => {
-          state.libraryType === '' ?
+          state.title === '' ?
             setData({
-              libraryType: availableTemplates[0].title,
+              title: availableTemplates[0].title,
               fields: availableTemplates[0].fields,
             })
           : null;
