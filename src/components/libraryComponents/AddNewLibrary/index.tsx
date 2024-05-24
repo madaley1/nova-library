@@ -80,6 +80,8 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
           const { title, fields } = template;
           return { title, fields: JSON.parse(fields) };
         });
+
+        console.log(procesedTemplates);
         dispatch(setTemplates(procesedTemplates));
       })
       .catch((err) => console.error(err));

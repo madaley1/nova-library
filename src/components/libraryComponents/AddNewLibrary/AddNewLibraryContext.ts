@@ -2,13 +2,13 @@ import { FieldType } from '@/utils/libraries/templates';
 import type { Dispatch } from 'react';
 import { Reducer, createContext, useCallback, useContext } from 'react';
 
-type AddNewLibraryContextState = {
-  libraryType: string;
+export type AddNewLibraryContextState = {
+  title: string;
   fields: Record<string, FieldType>;
 };
 
 export const initialContextValue: AddNewLibraryContextState = {
-  libraryType: '',
+  title: '',
   fields: {},
 };
 
@@ -22,7 +22,7 @@ type AddNewLibraryAction = {
 export const addNewLibraryReducer: Reducer<AddNewLibraryContextState, AddNewLibraryAction> = (state, action) => {
   switch (action.type) {
     case 'setType':
-      return { ...state, libraryType: action.data.value };
+      return { ...state, title: action.data.value };
     case 'setFields':
       return { ...state, fields: action.data };
     case 'setContext':
