@@ -23,31 +23,42 @@ const StepThree = (props: StepThreeProps) => {
         return (
           <Container sx={{ display: `${props.active ? 'block' : 'none'}` }}>
             <Typography variant="h5" sx={{ marginBottom: '1em', textTransform: 'capitalize' }}>
-              Library Name: <br />
+              Library Name:
+            </Typography>
+            <Typography variant="h6" sx={{ marginBottom: '1em', textTransform: 'capitalize' }}>
               {state.libraryType}
             </Typography>
-            <Box sx={{ display: 'flex', flexFlow: 'column' }}>
+            <Box sx={{ display: 'flex', flexFlow: 'column', height: 'max-content' }}>
               <Typography variant="h5" sx={{ marginBottom: '1em', textTransform: 'capitalize' }}>
                 Library Fields:
               </Typography>
-              <DataGrid
-                rows={rows}
-                columns={[
-                  {
-                    field: 'fieldName',
-                    headerName: 'Field Name',
-                  },
-                  {
-                    field: 'fieldType',
-                    headerName: 'Field Type',
-                  },
-                ]}
-              />
-              ;
+              {props.active ?
+                <DataGrid
+                  rows={rows}
+                  columns={[
+                    {
+                      field: 'fieldName',
+                      headerName: 'Field Name',
+                      minWidth: 250,
+                    },
+                    {
+                      field: 'fieldType',
+                      headerName: 'Field Type',
+                    },
+                  ]}
+                  sx={{ minWidth: '45em', marginBottom: '1em' }}
+                />
+              : <></>}
             </Box>
             <ButtonGroup variant="outlined">
               <Button onClick={props.goBackFunction}>Back</Button>
-              <Button>Submit New Library</Button>
+              <Button
+                onClick={() => {
+                  console.log(state);
+                }}
+              >
+                Submit New Library
+              </Button>
             </ButtonGroup>
           </Container>
         );
