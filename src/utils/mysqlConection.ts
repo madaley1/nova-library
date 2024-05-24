@@ -9,7 +9,6 @@ export const connection = mysql.createConnection({
 });
 
 connection.connect((error) => {
-  // console.log(connection.config);
   if (error) {
     throw new Error('Failed to connect to mysql', error);
   }

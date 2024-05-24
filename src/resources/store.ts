@@ -10,7 +10,7 @@ const store = configureStore({
     userSettings,
     resourceData,
     navData,
-    libraryData
+    libraryData,
   },
 });
 export type IRootState = ReturnType<typeof store.getState>;
