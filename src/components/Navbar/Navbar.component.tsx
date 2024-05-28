@@ -13,11 +13,11 @@ import style from './Navbar.module.scss';
 const Navbar = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const toggleSettings = () => setSettingsOpen(!settingsOpen);
-  const openSettings = () => setSettingsOpen(true);
+  // const openSettings = () => setSettingsOpen(true);
   const closeSettings = () => setSettingsOpen(false);
 
   const [addNewLibraryOpen, setNewLibraryOpen] = useState(false);
-  const toggleAddNewLibrary = () => setNewLibraryOpen(!addNewLibraryOpen);
+  // const toggleAddNewLibrary = () => setNewLibraryOpen(!addNewLibraryOpen);
   const openAddNewLibrary = () => setNewLibraryOpen(true);
   const closeAddNewLibrary = () => setNewLibraryOpen(false);
 
@@ -47,13 +47,11 @@ const Navbar = () => {
   return (
     <Container className={style.Navbar}>
       <Box className={style.LinkBox}>
-      <Link href="/" sx={{ textTransform: 'capitalize' }}>
-        Home
-      </Link>
-        {
-        navList.length > 0 ?
+        <Link href="/" sx={{ textTransform: 'capitalize' }}>
+          Home
+        </Link>
+        {navList.length > 0 ?
           <>
-            
             {navList.map((link) => {
               return (
                 <Link key={link.href} href={link.href} sx={{ textTransform: 'capitalize' }}>
@@ -62,10 +60,14 @@ const Navbar = () => {
               );
             })}
           </>
-        : <Typography>No Libraries Available</Typography> || <Typography>Loading...</Typography>
-        }
-        <Button sx={{display: 'flex', flexFlow: 'row nowrap', textWrap: 'nowrap', width: 'max-content'}} onClick={openAddNewLibrary}><AddIcon /> Create New Library</Button>
-        <AddNewLibraryModal open={addNewLibraryOpen} closeModal={closeAddNewLibrary}/>
+        : <Typography>No Libraries Available</Typography> || <Typography>Loading...</Typography>}
+        <Button
+          sx={{ display: 'flex', flexFlow: 'row nowrap', textWrap: 'nowrap', width: 'max-content' }}
+          onClick={openAddNewLibrary}
+        >
+          <AddIcon /> Create New Library
+        </Button>
+        <AddNewLibraryModal open={addNewLibraryOpen} closeModal={closeAddNewLibrary} />
       </Box>
 
       <Box>
