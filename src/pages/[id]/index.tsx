@@ -1,6 +1,6 @@
 import { EditRowModal } from '@/components/libraryComponents/EditRow';
 import { setColumnNames, setResourceData } from '@/resources/resourceData';
-import store, { IRootState } from '@/resources/store';
+import { IRootState } from '@/resources/store';
 import { Button, Grid } from '@mui/material';
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { NextPageContext } from 'next';
@@ -11,14 +11,12 @@ export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${id}`);
   const data = await response.json();
-  console.log(data);
   return {
     props: { data },
   };
 }
 
 export default function Index({ data }: Record<string, any>) {
-  const [currentData, setCurrentData] = useState(data);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const resourceData = useSelector((state: IRootState) => state.resourceData);
   const dispatch = useDispatch();
@@ -38,7 +36,6 @@ export default function Index({ data }: Record<string, any>) {
         hideable: column === 'id',
       }))
     : [];
-  console.log(columns);
   columns.push({
     field: 'edit',
     headerName: 'Edit',

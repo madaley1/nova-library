@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 
-import { StrictMode, useEffect } from 'react';
+import { StrictMode } from 'react';
 
 import userSettings from '@/resources/store';
 import '@/styles/globals.scss';
