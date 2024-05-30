@@ -10,6 +10,7 @@ const defaultSettings = {
 };
 
 const updateLocalStorage = (newuserSettings: Record<string, any>) => {
+  if (typeof localStorage === 'undefined') return;
   localStorage.setItem('NL__userSettings', JSON.stringify(newuserSettings));
 };
 

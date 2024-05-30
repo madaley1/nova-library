@@ -25,5 +25,5 @@ const navData = createSlice({
   },
 });
 
-export const { setNavData } = navData.actions;
+export const { setNavData, addNewLink } = navData.actions;
 export default navData.reducer;
