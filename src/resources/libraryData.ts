@@ -1,7 +1,7 @@
 import { libraryTemplate } from '@/utils/libraries/templates';
 import { createSlice } from '@reduxjs/toolkit';
 
-const resourceData = createSlice({
+const libraryData = createSlice({
   name: 'Resource Data',
   initialState: {
     templates: Array<libraryTemplate>(),
@@ -12,5 +12,5 @@ const resourceData = createSlice({
   },
 });
 
-export const { setTemplates } = resourceData.actions;
-export default resourceData.reducer;
+export const { setTemplates, addTemplate } = libraryData.actions;
+export default libraryData.reducer;
