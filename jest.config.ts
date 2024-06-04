@@ -39,9 +39,10 @@ const config: Config = {
   // An array of file extensions your modules use
   moduleFileExtensions: ['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'json', 'node'],
 
+  setupFilesAfterEnv: ['./jestSetup.ts'],
   // jest test setup
-  globalSetup: 'node_modules/@databases/mysql-test/jest/globalSetup',
-  globalTeardown: '/node_modules/@databases/mysql-test/jest/globalTeardown',
+  // globalSetup: 'node_modules/@databases/mysql-test/jest/globalSetup',
+  // globalTeardown: 'node_modules/@databases/mysql-test/jest/globalTeardown',
 };
 const createJestConfig = nextJest({
   dir: './',

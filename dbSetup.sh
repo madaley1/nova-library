@@ -11,6 +11,15 @@ docker exec db bash -c "cat /mnt/db/sql/templates.sql | mysql \
   --host=$MYSQL_HOST \
   --port=$MYSQL_INTERNAL_PORT \
   --protocol=tcp \
-  --user=$MYSQL_USER \
-  --password=$MYSQL_PASSWORD \
-  --database=$MYSQL_DATABASE"
+  --user=root \
+  --password=$MYSQL_ROOT_PASSWORD \
+  --database=$MYSQL_DATABASE" && \
+
+docker exec db bash -c "mysql \
+  --host=$MYSQL_HOST \
+  --port=$MYSQL_INTERNAL_PORT \
+  --protocol=tcp \
+  --user=root \
+  --password=$MYSQL_ROOT_PASSWORD \
+  --database=$MYSQL_DATABASE \
+  -e 'GRANT ALL PRIVILEGES ON testDB.* TO '"'"'$MYSQL_USER'"'"';'"
