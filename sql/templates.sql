@@ -44,3 +44,5 @@ VALUES
         'custom',
         '{"id":"number","title":"string","release_date":"date","genre":"multiSelect"}'
     );
+
+CREATE DATABASE testDB;
