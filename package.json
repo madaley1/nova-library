@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start-db": "sh ./dbSetup.sh",
+    "setup-db": "sh ./dbSetup.sh",
+    "reset-db": "sh ./dbReset.sh",
+    "start-db": "docker compose up",
     "stop-db": "docker compose down",
     "dev": "docker compose up -d && next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
+    "test": "jest test --runInBand",
     "lint": "next lint"
   },
   "dependencies": {
