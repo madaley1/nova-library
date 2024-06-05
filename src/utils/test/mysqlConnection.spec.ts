@@ -1,5 +1,7 @@
 import { afterAll, describe, expect, it } from '@jest/globals';
-import { connection, runMySqlQuery, testConnection } from './mysqlConection';
+import { connection, runMySqlQuery } from '../mysqlConection';
+
+import { testConnection } from '@/utils/test/jestSetup';
 
 afterAll(() => {
   testConnection.end();
@@ -8,6 +10,7 @@ afterAll(() => {
 describe('mysqlConnection', () => {
   it('should successfully query', () => {
     connection.query('SELECT * FROM information_schema.tables', (err, rows, fields) => {
+      connection.end();
       expect(err).toBe(null);
       expect(rows).toBeTruthy;
     });
@@ -15,6 +18,7 @@ describe('mysqlConnection', () => {
 
   it('testConnection should work', () => {
     testConnection.query('SELECT * FROM information_schema.tables', (err, rows, fields) => {
+      testConnection.end();
       expect(err).toBe(null);
       expect(rows).toBeTruthy;
     });
