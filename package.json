@@ -5,7 +5,7 @@
   "scripts": {
     "setup-db": "sh ./dbSetup.sh",
     "reset-db": "sh ./dbReset.sh",
-    "start-db": "docker compose up",
+    "start-db": "docker compose up -d",
     "stop-db": "docker compose down",
     "dev": "docker compose up -d && next dev",
     "build": "next build",
