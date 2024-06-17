@@ -18,7 +18,6 @@ describe('mysqlConnection', () => {
 
   it('testConnection should work', () => {
     testConnection.query('SELECT * FROM information_schema.tables', (err, rows, fields) => {
-      testConnection.end();
       expect(err).toBe(null);
       expect(rows).toBeTruthy;
     });
