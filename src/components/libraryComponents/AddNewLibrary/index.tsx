@@ -1,12 +1,14 @@
 import Modal from '@/components/Modal';
 import { setTemplates } from '@/resources/libraryData';
 import styles from '@/styles/modal.module.scss';
+
 import { libraryTemplate } from '@/utils/libraries/templates';
 import { Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useReducer, useState } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { AddNewLibraryContext, addNewLibraryReducer, initialContextValue } from './AddNewLibraryContext';
 import StepOne from './StepOne';
 import StepThree from './StepThree';
