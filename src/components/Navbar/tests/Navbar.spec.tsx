@@ -10,7 +10,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import Navbar from '../Navbar.component';
 
-const fetchResponse = jest.spyOn(global, 'fetch');
 let navContainsValues = false;
 const navValues = [
   {
@@ -20,6 +19,7 @@ const navValues = [
     table_name: 'movies',
   },
 ];
+
 function mockHandler(url: string | URL | Request): Promise<Response> {
   const path = (url as string).split(`${process.env.NEXT_PUBLIC_URL}/`)[1];
   if (path === 'api/nav') {
@@ -30,6 +30,7 @@ function mockHandler(url: string | URL | Request): Promise<Response> {
   return emptyNavValues;
 }
 
+const fetchResponse = jest.spyOn(global, 'fetch');
 fetchResponse.mockImplementation(mockHandler);
 
 describe('Navbar', () => {
@@ -60,9 +61,6 @@ describe('Navbar', () => {
 
   it('should display navigation links when data is fetched', async () => {
     navContainsValues = true;
-
-    console.info('starting test');
-
     render(
       <Provider store={store}>
         <Navbar />
