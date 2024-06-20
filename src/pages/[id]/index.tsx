@@ -1,4 +1,4 @@
-import { EditRowModal } from '@/components/libraryComponents/EditRow';
+import { EditRowModal } from '@/components/libraryComponents/EditRow.component';
 import { setColumnNames, setResourceData } from '@/resources/resourceData';
 import { IRootState } from '@/resources/store';
 import { Button, Grid } from '@mui/material';

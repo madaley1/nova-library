@@ -1,4 +1,4 @@
-const fieldTypes = ['string', 'number', 'date', 'select', 'multiSelect'] as const;
+export const fieldTypes = ['string', 'number', 'date', 'select', 'multiSelect'] as const;
 export type FieldType = (typeof fieldTypes)[number];
 
 export type libraryTemplate = {

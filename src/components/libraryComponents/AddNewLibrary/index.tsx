@@ -10,9 +10,9 @@ import { useEffect, useReducer, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AddNewLibraryContext, addNewLibraryReducer, initialContextValue } from './AddNewLibraryContext';
-import StepOne from './StepOne';
-import StepThree from './StepThree';
-import StepTwo from './StepTwo';
+import StepOne from './StepOne.component';
+import StepThree from './StepThree.component';
+import StepTwo from './StepTwo.component';
 
 type EditRowModalProps = {
   open: boolean;
@@ -72,19 +72,21 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
   };
 
   const footerContent = <></>;
+  const getTemplates = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/libraries/create`);
+    const templateJSON = await response.json();
+    if (templateJSON.length > 0) {
+      const procesedTemplates: libraryTemplate[] = templateJSON.map((template: any) => {
+        const { title, fields } = template;
+        return { title, fields: JSON.parse(fields) };
+      });
+      dispatch(setTemplates(procesedTemplates));
+    }
+    dispatch(setTemplates(templateJSON));
+  };
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_URL}/api/libraries/create`)
-      .then(async (response) => {
-        const templateJSON = await response.json();
-        const procesedTemplates: libraryTemplate[] = templateJSON.map((template: any) => {
-          const { title, fields } = template;
-          return { title, fields: JSON.parse(fields) };
-        });
-
-        dispatch(setTemplates(procesedTemplates));
-      })
-      .catch((err) => console.error(err));
+    getTemplates();
   }, []);
 
   return (
