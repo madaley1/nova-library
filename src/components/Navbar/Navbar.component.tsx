@@ -34,7 +34,10 @@ const Navbar = () => {
       if (!data.table_name) return {};
       return {
         href: data.table_name,
-        title: data.table_name.split('_').join(' '),
+        title: (function () {
+          const name = data.table_name.split('_').join(' ');
+          return name.charAt(0).toUpperCase() + name.slice(1);
+        })(),
       };
     });
     navList === newNavList ? null : dispatch(setNavData(newNavList));
@@ -45,7 +48,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <Container className={style.Navbar}>
+    <Container className={style.Navbar} role="navigation">
       <Box className={style.LinkBox}>
         <Link href="/" sx={{ textTransform: 'capitalize' }}>
           Home
@@ -83,7 +86,7 @@ const Navbar = () => {
             {store.getState().userSettings.darkMode ? 'Dark Mode' : 'Light Mode'}
           </MenuItem>
         </Menu>
-        <Button className="options-button" onClick={toggleSettings}>
+        <Button className="options-button" role="tooltip" onClick={toggleSettings}>
           <Settings />
         </Button>
       </Box>

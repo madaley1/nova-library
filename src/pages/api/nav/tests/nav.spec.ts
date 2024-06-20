@@ -1,6 +1,7 @@
-import { runMySqlQuery, testConnection } from '@/utils/mysqlConection';
+import { runMySqlQuery } from '@/utils/mysqlConection';
+import { testConnection } from '@/utils/test/jestUtils';
 import { describe, expect, it } from '@jest/globals';
-import { processResults, sql_getAllTables } from '.';
+import { processResults, sql_getAllTables } from '../';
 
 describe('nav api', () => {
   it('nav query should work', async () => {
