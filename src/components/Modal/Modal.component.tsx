@@ -21,7 +21,7 @@ export const Modal = (props: ModalProps) => {
       }}
     >
       <MuiModal open={props.open}>
-        <Box className={styles.modal}>
+        <Box className={styles.modal} role="dialog">
           <Grid container sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
             <Grid item className={styles['modal-header']}>
               {props.headerContent}
