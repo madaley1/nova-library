@@ -42,7 +42,7 @@ const config: Config = {
   moduleFileExtensions: ['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'json', 'node'],
   testMatch: ['**/*.spec.*'],
   // jest test setup
-  setupFilesAfterEnv: ['@testing-library/jest-dom', 'jest-fetch-mock', './src/utils/test/jest.setup.ts'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom', 'jest-fetch-mock', './src/utils/tests/jest.setup.ts'],
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
