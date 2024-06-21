@@ -1,24 +1,14 @@
 import { existingTemplates, standardTemplates } from '@/pages/api/libraries/create/mocks/GET.mock';
 import { emptyNavValues, existingNavValues } from '@/pages/api/nav/mocks/index.mock';
-import { setNavData } from '@/resources/navData';
 import store from '@/resources/store';
-import { toggleDarkMode } from '@/resources/userSettings';
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import React from 'react';
 import { Provider } from 'react-redux';
 import Navbar from '../Navbar.component';
 
 let navContainsValues = false;
-const navValues = [
-  {
-    table_name: 'books',
-  },
-  {
-    table_name: 'movies',
-  },
-];
+const navValues = [{ table_name: 'books' }, { table_name: 'movies' }];
 
 function mockHandler(url: string | URL | Request): Promise<Response> {
   const path = (url as string).split(`${process.env.NEXT_PUBLIC_URL}/`)[1];
@@ -33,7 +23,7 @@ function mockHandler(url: string | URL | Request): Promise<Response> {
 const fetchResponse = jest.spyOn(global, 'fetch');
 fetchResponse.mockImplementation(mockHandler);
 
-describe('Navbar', () => {
+describe('Navbar Component Tests', () => {
   afterEach(() => {
     fetchResponse.mockClear();
   });
@@ -50,7 +40,6 @@ describe('Navbar', () => {
 
   it('should display "No Libraries Available" when there are no nav links', async () => {
     navContainsValues = false;
-
     render(
       <Provider store={store}>
         <Navbar />
@@ -66,7 +55,6 @@ describe('Navbar', () => {
         <Navbar />
       </Provider>,
     );
-
     await waitFor(() => {
       expect(screen.getByText('Books')).toBeInTheDocument();
       expect(screen.getByText('Movies')).toBeInTheDocument();
@@ -92,7 +80,7 @@ describe('Navbar', () => {
       </Provider>,
     );
 
-    const settingsButton = document.querySelector('[data-testid="SettingsIcon"]')?.parentElement;
+    const settingsButton = screen.getByTestId('SettingsIcon').parentElement;
     if (!settingsButton) throw new Error('button not found');
     fireEvent.click(settingsButton);
     await waitFor(() => expect(screen.getByText(/dark mode|light mode/i)).toBeInTheDocument());
