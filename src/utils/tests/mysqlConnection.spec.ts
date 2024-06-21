@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, it } from '@jest/globals';
 import { connection, runMySqlQuery } from '../mysqlConection';
 
-import { testConnection } from '@/utils/test/jestUtils';
+import { testConnection } from '@/utils/tests/jestUtils';
 
 afterAll(() => {
   testConnection.end();
