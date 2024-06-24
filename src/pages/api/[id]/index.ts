@@ -10,7 +10,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const getColumns = () =>
     connection.query(sql_getColumns, (error, rows) => {
       if (error) res.status(500).json({ message: 'An error has ocurred, please see error message', error });
-      // console.log(rows);
       const columnNames = rows.map((column: { COLUMN_NAME: string }) => column.COLUMN_NAME);
       log(columnNames);
       res.status(200).json({ columnNames, currentData: [] });
@@ -26,7 +25,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         res.status(200).json({ columnNames, currentData });
       };
       if (Array.isArray(rows)) {
-        // console.log(rows);
         rows.length > 0 ? formatRows(rows) : getColumns();
       }
     });

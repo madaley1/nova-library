@@ -25,6 +25,7 @@ const StepOne = (props: StepOneProps) => {
               return (
                 <Button
                   key={template.title}
+                  role="button"
                   onClick={() => {
                     setData({
                       title: template.title,

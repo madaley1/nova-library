@@ -1,4 +1,4 @@
-import { FieldType } from '@/utils/libraries/templates';
+import { FieldType, fieldTypes } from '@/utils/libraries/templates';
 import type { Dispatch } from 'react';
 import { Reducer, createContext, useCallback, useContext } from 'react';
 
@@ -9,24 +9,48 @@ export type AddNewLibraryContextState = {
 
 export const initialContextValue: AddNewLibraryContextState = {
   title: '',
-  fields: {},
+  fields: {} as Record<string, FieldType>,
 };
 
 type AddNewLibraryActionTypes = 'setType' | 'setFields' | 'setContext';
 
 type AddNewLibraryAction = {
   type: AddNewLibraryActionTypes;
-  data: Record<string, any>;
+  data: unknown;
+};
+
+const isDataContextState = (data: any): data is AddNewLibraryContextState => {
+  try {
+    return data?.title && data?.fields;
+  } catch {
+    return false;
+  }
+};
+
+const isDataFieldList = (data: any): data is Record<string, FieldType> => {
+  const entries = Object.entries(data);
+  let isValid = true;
+  for (const [title, type] of entries) {
+    if (!fieldTypes.some((arr) => arr === `${type}`)) {
+      isValid = false;
+      break;
+    }
+  }
+  return isValid;
 };
 
 export const addNewLibraryReducer: Reducer<AddNewLibraryContextState, AddNewLibraryAction> = (state, action) => {
   switch (action.type) {
     case 'setType':
-      return { ...state, title: action.data.value };
+      if (typeof action.data !== 'string') throw new Error('Please provide a string for setting the library type');
+      return { ...state, title: action.data };
     case 'setFields':
+      if (typeof action.data !== 'object' || !isDataFieldList(action.data))
+        throw new Error('Please provide an object with properties ');
       return { ...state, fields: action.data };
     case 'setContext':
-      return action.data as AddNewLibraryContextState;
+      if (isDataContextState(action.data)) return { ...state, ...action.data };
+      else throw new Error('Please provide the full state for setting context');
   }
 };
 
@@ -40,7 +64,7 @@ export const useLibraryType = () => {
   const setType = useCallback((newType: string) => {
     dispatch({
       type: 'setType',
-      data: { value: newType },
+      data: newType,
     });
   }, []);
   return [state, setType] as const;
@@ -49,23 +73,23 @@ export const useLibraryType = () => {
 export const useLibraryFields = () => {
   if (AddNewLibraryContext === null) throw Error('Context not initialized');
   const [state, dispatch] = useContext(AddNewLibraryContext) as ContextValue;
-  const setType = useCallback((newFields: Record<string, FieldType>) => {
+  const setFields = useCallback((newFields: Record<string, FieldType>) => {
     dispatch({
       type: 'setFields',
       data: newFields,
     });
   }, []);
-  return [state, setType] as const;
+  return [state, setFields] as const;
 };
 
 export const useLibraryData = () => {
   if (AddNewLibraryContext === null) throw Error('Context not initialized');
   const [state, dispatch] = useContext(AddNewLibraryContext) as ContextValue;
-  const setType = useCallback((newData: AddNewLibraryContextState) => {
+  const setData = useCallback((newData: AddNewLibraryContextState) => {
     dispatch({
       type: 'setContext',
       data: newData,
     });
   }, []);
-  return [state, setType] as const;
+  return [state, setData] as const;
 };

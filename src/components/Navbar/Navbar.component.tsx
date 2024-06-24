@@ -1,4 +1,4 @@
-import { AddNewLibraryModal } from '@/components/libraryComponents/AddNewLibrary';
+import AddNewLibraryModal from '@/components/libraryComponents/AddNewLibrary';
 import { NavLink, setNavData } from '@/resources/navData';
 import store, { IRootState } from '@/resources/store';
 import { toggleDarkMode } from '@/resources/userSettings';
