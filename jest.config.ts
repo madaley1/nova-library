@@ -47,7 +47,7 @@ const config: Config = {
     customExportConditions: [''],
   },
   // globalSetup: './src/utils/test/jestSetup.ts',
-  // globalTeardown: './src/utils/test/jestTeardown.ts',
+  globalTeardown: './src/utils/tests/jestTeardown.ts',
 };
 const createJestConfig = nextJest({
   dir: './',
