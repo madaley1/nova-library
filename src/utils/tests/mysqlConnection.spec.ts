@@ -3,9 +3,9 @@ import { connection, runMySqlQuery } from '../mysqlConection';
 
 import { testConnection } from '@/utils/tests/jestUtils';
 
-afterAll(() => {
-  testConnection.end();
-});
+// afterAll(() => {
+//   testConnection.end();
+// });
 
 describe('mysqlConnection', () => {
   it('should successfully query', () => {

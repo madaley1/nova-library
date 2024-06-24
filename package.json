@@ -10,7 +10,7 @@
     "dev": "docker compose up -d && next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest test --runInBand --detectOpenHandles --silent=false",
+    "test": "jest test",
     "lint": "next lint"
   },
   "dependencies": {
