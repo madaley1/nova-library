@@ -1,4 +1,6 @@
 . ./.env
+docker compose down && \
+sudo rm -rf db && \
 docker compose up -d && \
 until nc -z -v -w30 $MYSQL_HOST $MYSQL_EXTERNAL_PORT && docker exec db bash -c "mysql --database=$MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASSWORD"
 do

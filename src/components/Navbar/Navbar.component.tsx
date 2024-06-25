@@ -1,4 +1,4 @@
-import { AddNewLibraryModal } from '@/components/libraryComponents/AddNewLibrary';
+import AddNewLibraryModal from '@/components/libraryComponents/AddNewLibrary';
 import { NavLink, setNavData } from '@/resources/navData';
 import store, { IRootState } from '@/resources/store';
 import { toggleDarkMode } from '@/resources/userSettings';
@@ -13,11 +13,11 @@ import style from './Navbar.module.scss';
 const Navbar = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const toggleSettings = () => setSettingsOpen(!settingsOpen);
-  const openSettings = () => setSettingsOpen(true);
+  // const openSettings = () => setSettingsOpen(true);
   const closeSettings = () => setSettingsOpen(false);
 
   const [addNewLibraryOpen, setNewLibraryOpen] = useState(false);
-  const toggleAddNewLibrary = () => setNewLibraryOpen(!addNewLibraryOpen);
+  // const toggleAddNewLibrary = () => setNewLibraryOpen(!addNewLibraryOpen);
   const openAddNewLibrary = () => setNewLibraryOpen(true);
   const closeAddNewLibrary = () => setNewLibraryOpen(false);
 
@@ -34,7 +34,10 @@ const Navbar = () => {
       if (!data.table_name) return {};
       return {
         href: data.table_name,
-        title: data.table_name.split('_').join(' '),
+        title: (function () {
+          const name = data.table_name.split('_').join(' ');
+          return name.charAt(0).toUpperCase() + name.slice(1);
+        })(),
       };
     });
     navList === newNavList ? null : dispatch(setNavData(newNavList));
@@ -45,15 +48,13 @@ const Navbar = () => {
   }, []);
 
   return (
-    <Container className={style.Navbar}>
+    <Container className={style.Navbar} role="navigation">
       <Box className={style.LinkBox}>
-      <Link href="/" sx={{ textTransform: 'capitalize' }}>
-        Home
-      </Link>
-        {
-        navList.length > 0 ?
+        <Link href="/" sx={{ textTransform: 'capitalize' }}>
+          Home
+        </Link>
+        {navList.length > 0 ?
           <>
-            
             {navList.map((link) => {
               return (
                 <Link key={link.href} href={link.href} sx={{ textTransform: 'capitalize' }}>
@@ -62,10 +63,14 @@ const Navbar = () => {
               );
             })}
           </>
-        : <Typography>No Libraries Available</Typography> || <Typography>Loading...</Typography>
-        }
-        <Button sx={{display: 'flex', flexFlow: 'row nowrap', textWrap: 'nowrap', width: 'max-content'}} onClick={openAddNewLibrary}><AddIcon /> Create New Library</Button>
-        <AddNewLibraryModal open={addNewLibraryOpen} closeModal={closeAddNewLibrary}/>
+        : <Typography>No Libraries Available</Typography> || <Typography>Loading...</Typography>}
+        <Button
+          sx={{ display: 'flex', flexFlow: 'row nowrap', textWrap: 'nowrap', width: 'max-content' }}
+          onClick={openAddNewLibrary}
+        >
+          <AddIcon /> Create New Library
+        </Button>
+        <AddNewLibraryModal open={addNewLibraryOpen} closeModal={closeAddNewLibrary} />
       </Box>
 
       <Box>
@@ -81,7 +86,7 @@ const Navbar = () => {
             {store.getState().userSettings.darkMode ? 'Dark Mode' : 'Light Mode'}
           </MenuItem>
         </Menu>
-        <Button className="options-button" onClick={toggleSettings}>
+        <Button className="options-button" role="tooltip" onClick={toggleSettings}>
           <Settings />
         </Button>
       </Box>

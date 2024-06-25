@@ -1,6 +1,6 @@
-import mysql from 'mysql';
+import mysql, { Pool } from 'mysql';
 
-export const connection = mysql.createConnection({
+export const connection = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
@@ -8,8 +8,11 @@ export const connection = mysql.createConnection({
   database: process.env.MYSQL_DATABASE,
 });
 
-connection.connect((error) => {
-  if (error) {
-    throw new Error('Failed to connect to mysql', error);
-  }
-});
+export function runMySqlQuery(query: string, connection: Pool) {
+  return new Promise<Record<string, any>>((res, rej) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) rej(error);
+      res({ results, fields });
+    });
+  });
+}

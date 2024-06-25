@@ -1,8 +1,8 @@
 import Layout from '@/components/Layout';
 
-import { StrictMode, useEffect } from 'react';
+import { StrictMode } from 'react';
 
-import userSettings from '@/resources/store';
+import store from '@/resources/store';
 import '@/styles/globals.scss';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <StrictMode>
-      <Provider store={userSettings}>
+      <Provider store={store}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
