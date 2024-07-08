@@ -14,7 +14,7 @@ export async function getHandler(id: string, connection: Pool) {
   const formatColumns = async () => {
     const columnArray = (await getColumns()).results;
     const columnNames = columnArray.map((column: { COLUMN_NAME: string }) => column.COLUMN_NAME);
-    return columnNames;
+    return { columnNames, currentData: [] };
   };
 
   const formatRows = async (rows: any) => {

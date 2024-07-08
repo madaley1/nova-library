@@ -39,7 +39,6 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
     setStepTwoActive(false);
     setStepThreeActive(true);
   };
-
   const returnToStepTwo = () => {
     setStepTwoActive(true);
     setStepThreeActive(false);
