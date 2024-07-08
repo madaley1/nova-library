@@ -5,3 +5,5 @@ export type libraryTemplate = {
   title: string;
   fields: Record<string, FieldType>;
 };
+
+export const isFieldType = (type: any): type is FieldType => fieldTypes.includes(type);
