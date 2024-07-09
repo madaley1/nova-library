@@ -7,7 +7,7 @@ export type AddNewLibraryContextState = {
   fields: Record<string, FieldType>;
 };
 
-export const initialContextValue: AddNewLibraryContextState = {
+export const initialAddNewLibraryContextValue: AddNewLibraryContextState = {
   title: '',
   fields: {} as Record<string, FieldType>,
 };

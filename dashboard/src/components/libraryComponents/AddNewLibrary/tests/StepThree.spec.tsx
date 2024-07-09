@@ -3,7 +3,11 @@ import { describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { AddNewLibraryContext, AddNewLibraryContextState, initialContextValue } from '../AddNewLibraryContext';
+import {
+  AddNewLibraryContext,
+  AddNewLibraryContextState,
+  initialAddNewLibraryContextValue,
+} from '../AddNewLibraryContext';
 import StepThree from '../StepThree.component';
 
 describe('StepThree', () => {
