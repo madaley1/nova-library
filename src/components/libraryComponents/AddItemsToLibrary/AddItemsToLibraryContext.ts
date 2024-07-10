@@ -43,10 +43,17 @@ const dataIsFieldValues = (
   if (!('fieldValues' in data) || typeof data.fieldValues !== 'object' || !data.fieldValues) return false;
   const stateKeys = Object.keys(state.fields);
   const dataKeys = Object.keys(data.fieldValues);
-  return dataKeys === stateKeys;
+  if (dataKeys.length !== stateKeys.length) return false;
+  let arraysMatch = true;
+  for (const value of dataKeys) {
+    if (!stateKeys.includes(value)) {
+      arraysMatch = false;
+    }
+  }
+  return arraysMatch;
 };
 
-export const addItemsToLibraryContext: Reducer<AddItemsToLibraryContextState, AddItemsToLibraryAction> = (
+export const addItemsToLibraryContextReducer: Reducer<AddItemsToLibraryContextState, AddItemsToLibraryAction> = (
   state,
   action,
 ) => {
@@ -70,3 +77,7 @@ export const addItemsToLibraryContext: Reducer<AddItemsToLibraryContextState, Ad
       }
   }
 };
+
+type ContextValue = [AddItemsToLibraryContextState, Dispatch<AddItemsToLibraryAction>];
+
+export const AddNewItemsToLibrary = createContext<ContextValue | null>(null);
