@@ -24,9 +24,9 @@ const StepTwo = (props: StepTwoProps) => {
   const [libraryState, setData] = useLibraryData();
   return (
     <AddNewLibraryContext.Consumer>
-      {(value) => {
-        if (value === null) return <>Something has gone wrong, please reload and try again</>;
-        const [state, dispatch] = value;
+      {(context) => {
+        if (context === null) return <>Something has gone wrong, please reload and try again</>;
+        const [state, dispatch] = context;
         let newState = state;
 
         return (

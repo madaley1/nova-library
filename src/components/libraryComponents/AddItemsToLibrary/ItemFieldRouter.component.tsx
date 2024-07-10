@@ -6,22 +6,27 @@ import { SelectField } from './SelectField.component';
 import { StringField } from './StringField.component';
 
 type routerProps = {
+  fieldTitle: string;
   type: FieldType;
+};
+
+export type FieldProps = {
+  fieldTitle: string;
 };
 
 export const ItemFieldRouter = (props: routerProps) => {
   switch (props.type) {
     case 'string':
-      return <StringField />;
+      return <StringField fieldTitle={props.fieldTitle} />;
     case 'number':
-      return <NumberField />;
+      return <NumberField fieldTitle={props.fieldTitle} />;
     case 'date':
-      return <DateField />;
+      return <DateField fieldTitle={props.fieldTitle} />;
     case 'select':
-      return <SelectField />;
+      return <SelectField fieldTitle={props.fieldTitle} />;
     case 'multiSelect':
-      return <MultiSelectField />;
+      return <MultiSelectField fieldTitle={props.fieldTitle} />;
     default:
-      return <StringField />;
+      return <StringField fieldTitle={props.fieldTitle} />;
   }
 };
