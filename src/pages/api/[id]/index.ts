@@ -15,10 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const postInputData = {
       id,
       columnNames: Array<string>(),
-      data: body.data,
+      data: body,
     };
     if (!body.columnNames) {
-      const keys = Object.keys(body.data[0]);
+      const keys = Object.keys(body.fieldValues[0]);
       postInputData.columnNames = keys;
     } else {
       postInputData.columnNames = body.columnNames;

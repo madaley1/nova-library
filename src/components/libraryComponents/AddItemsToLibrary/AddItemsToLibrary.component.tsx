@@ -1,7 +1,9 @@
 import Modal from '@/components/Modal';
+import { PageIdContextProvider } from '@/pages/[id]';
 import { FieldType, isFieldType } from '@/utils/libraries/templates';
-import { Box, Button, Container } from '@mui/material';
-import { useEffect, useReducer, useState } from 'react';
+import { Box, Button, Container, Typography } from '@mui/material';
+import axios from 'axios';
+import { createContext, useEffect, useReducer, useState } from 'react';
 import {
   addItemsToLibraryContextReducer,
   AddNewItemsToLibrary,
@@ -20,9 +22,10 @@ type FieldEntry = {
   type: FieldType;
 };
 
+export const ItemIndexProvider = createContext(0);
+
 export const AddNewItemModal = (props: AddNewItemModalProps) => {
   const { columnNames, open, closeModal } = props;
-  // const [newItemData, setNewItemData] = useState<Record<string, any>>();
   const [formattedColumnNames, setFormattedColumnNames] = useState(Array<FieldEntry>());
 
   useEffect(() => {
@@ -41,10 +44,9 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
     setFormattedColumnNames(formattedFieldTypes);
   }, [columnNames]);
 
-  const submitNewItems = () => {};
-
   const BodyContent = () => {
     const initialFieldData = initialAddItemsToLibraryContextValue;
+    initialFieldData.fieldValues[0] = {};
     columnNames.forEach((value) => {
       if (value === 'id') return;
       const columnType = value.split('_')[0];
@@ -53,49 +55,104 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
       initialFieldData.fields[value] = columnType;
       switch (columnType) {
         case 'string' || 'select':
-          initialFieldData.fieldValues[value] = '';
+          initialFieldData.fieldValues[0][value] = '';
           break;
         case 'number':
-          initialFieldData.fieldValues[value] = 0;
+          initialFieldData.fieldValues[0][value] = 0;
           break;
         case 'date':
-          initialFieldData.fieldValues[value] = undefined;
+          initialFieldData.fieldValues[0][value] = undefined;
           break;
         case 'multiSelect':
-          initialFieldData.fieldValues[value] = Array<string>();
+          initialFieldData.fieldValues[0][value] = Array<string>();
       }
     });
-    const [state, dispatchFormData] = useReducer(addItemsToLibraryContextReducer, initialAddItemsToLibraryContextValue);
+
+    const [newItemData, setNewItemData] = useState(initialFieldData);
+
+    const [state, dispatchFormData] = useReducer(addItemsToLibraryContextReducer, newItemData);
+
+    const submitNewItems = (id: string, data: typeof newItemData) => {
+      const submissionData = data;
+      axios.post(`${process.env.NEXT_PUBLIC_URL}/api/${id}`, submissionData);
+    };
+    const addAnotherItem = () => {
+      const currentData = state;
+      currentData.fieldValues.push(initialFieldData.fieldValues[0]);
+      setNewItemData({ ...currentData });
+    };
+    const removeItem = (indexToRemove: number) => {
+      const currentData = state;
+      currentData.fieldValues.splice(indexToRemove, 1);
+      setNewItemData({ ...currentData });
+    };
     return (
-      <AddNewItemsToLibrary.Provider value={[state, dispatchFormData]}>
-        <Container sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
-          {formattedColumnNames.map((column, index) => {
-            return (
-              <Box key={index} sx={{ display: 'flex', flexFlow: 'row nowrap' }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexFlow: 'column nowrap',
-                    marginRight: '1em',
-                    width: '35em',
-                    height: '5em',
-                    textTransform: 'capitalize',
+      <PageIdContextProvider.Consumer>
+        {(id) => {
+          return (
+            <AddNewItemsToLibrary.Provider value={[state, dispatchFormData]}>
+              <Container sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
+                {newItemData.fieldValues.map((item, index) => (
+                  <ItemIndexProvider.Provider key={index} value={index}>
+                    <Box
+                      sx={{
+                        borderBottom: '1px solid #ffffff75',
+                        marginBottom: '.25em',
+                        display: 'flex',
+                        flexFlow: 'row nowrap',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <Typography variant="h4">Item {index + 1}</Typography>
+                      <Button
+                        disabled={newItemData.fieldValues.length <= 1}
+                        onClick={() => {
+                          removeItem(index);
+                        }}
+                        sx={{ fontSize: '16px' }}
+                      >
+                        Remove Item
+                      </Button>
+                    </Box>
+                    {formattedColumnNames.map((column, index) => {
+                      return (
+                        <Box key={index} sx={{ display: 'flex', flexFlow: 'row nowrap' }}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexFlow: 'column nowrap',
+                              marginRight: '1em',
+                              width: '35em',
+                              height: '5em',
+                              textTransform: 'capitalize',
+                            }}
+                          >
+                            <p>{column.name}</p>
+                          </Box>
+                          <Box sx={{ display: 'flex', flexFlow: 'column nowrap', height: '5em', width: '15em' }}>
+                            <ItemFieldRouter
+                              fieldTitle={`${column.type}_${column.name.split(' ').join('_')}`}
+                              type={column.type}
+                            />
+                          </Box>
+                        </Box>
+                      );
+                    })}
+                  </ItemIndexProvider.Provider>
+                ))}
+                <Button onClick={addAnotherItem}>Create Another Item to Add</Button>
+                <Button
+                  onClick={() => {
+                    submitNewItems(id, state);
                   }}
                 >
-                  <p>{column.name}</p>
-                </Box>
-                <Box sx={{ display: 'flex', flexFlow: 'column nowrap', height: '5em', width: '15em' }}>
-                  <ItemFieldRouter
-                    fieldTitle={`${column.type}_${column.name.split(' ').join('_')}`}
-                    type={column.type}
-                  />
-                </Box>
-              </Box>
-            );
-          })}
-          <Button>Submit New Item(s)</Button>
-        </Container>
-      </AddNewItemsToLibrary.Provider>
+                  Submit New Item(s)
+                </Button>
+              </Container>
+            </AddNewItemsToLibrary.Provider>
+          );
+        }}
+      </PageIdContextProvider.Consumer>
     );
   };
 

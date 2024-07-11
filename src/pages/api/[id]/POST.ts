@@ -1,5 +1,6 @@
 import { compileMultiSelect } from '@/utils/libraries/multiSelect';
 import { runMySqlQuery } from '@/utils/mysqlConection';
+import dayjs from 'dayjs';
 import { Pool } from 'mysql';
 
 const queryCreator = (id: string, columnNames: string[], data: Record<string, unknown>[]) => {
@@ -10,7 +11,10 @@ const queryCreator = (id: string, columnNames: string[], data: Record<string, un
         `(${columnNames
           .map((name) => {
             const value = item[name];
+
             if (typeof value === 'string') {
+              const isDay = dayjs(value).isValid();
+              if (isDay) return `"${value.split('T')[0]}"`;
               return `"${value || ''}"`;
             } else if (typeof value === 'number') {
               return value;
@@ -29,7 +33,7 @@ const queryCreator = (id: string, columnNames: string[], data: Record<string, un
 export async function postHandler(postData: Record<string, any>, connection: Pool) {
   const { id, columnNames, data } = postData;
   if (columnNames.includes('id')) columnNames.splice(columnNames.indexOf('id'), 1);
-  const newData = data.map((item: Record<string, any>) => {
+  const newData = data.fieldValues.map((item: Record<string, any>) => {
     const entries = Object.entries(item);
     const newRecord: Record<string, any> = {};
     entries.forEach((entry) => {

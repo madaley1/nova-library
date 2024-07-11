@@ -6,7 +6,7 @@ import { parseMultiSelect } from '@/utils/libraries/multiSelect';
 import { Button, Grid } from '@mui/material';
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { NextPageContext } from 'next';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -14,11 +14,13 @@ export async function getServerSideProps(context: NextPageContext) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${id}`);
   const data = await response.json();
   return {
-    props: { data },
+    props: { data, id },
   };
 }
 
-export default function Index({ data }: Record<string, any>) {
+export const PageIdContextProvider = createContext('');
+
+export default function Index({ data, id }: Record<string, any>) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [addNewItemModalOpen, setAddNewItemModalOpen] = useState(false);
   const resourceData = useSelector((state: IRootState) => state.resourceData);
@@ -94,7 +96,7 @@ export default function Index({ data }: Record<string, any>) {
   }, [resourceData.currentData]);
 
   return (
-    <>
+    <PageIdContextProvider.Provider value={id}>
       {resourceData.columnNames ?
         <DataGrid
           columns={columns}
@@ -130,6 +132,6 @@ export default function Index({ data }: Record<string, any>) {
         columnNames={resourceData.columnNames}
       />
       <EditRowModal open={editModalOpen} closeModal={closeEditModal} />
-    </>
+    </PageIdContextProvider.Provider>
   );
 }
