@@ -1,19 +1,19 @@
 import { isRecord } from '@/utils/isRecord';
 import { FieldType, fieldTypes } from '@/utils/libraries/templates';
 import type { Dispatch } from 'react';
-import { Reducer, createContext, useCallback, useContext } from 'react';
+import { Reducer, createContext } from 'react';
 
 type AddItemsToLibraryContextState = {
   fields: Record<string, FieldType>;
-  fieldValues: Record<string, unknown>;
+  fieldValues: Record<string, unknown>[];
 };
 
 export const initialAddItemsToLibraryContextValue: AddItemsToLibraryContextState = {
   fields: {},
-  fieldValues: {},
+  fieldValues: [],
 };
 
-type AddItemsToLibraryActionTypes = 'setContext' | 'setFields' | 'setFieldValues';
+type AddItemsToLibraryActionTypes = 'setContext' | 'setFields' | 'setFieldValues' | 'setSingleFieldValueItem';
 type AddItemsToLibraryAction = {
   type: AddItemsToLibraryActionTypes;
   data: Record<string, unknown>;
@@ -40,17 +40,28 @@ const dataIsFieldValues = (
   data: unknown,
 ): data is Omit<AddItemsToLibraryContextState, 'fields'> => {
   if (!isRecord(data)) return false;
-  if (!('fieldValues' in data) || typeof data.fieldValues !== 'object' || !data.fieldValues) return false;
+  if (
+    !('fieldValues' in data) ||
+    typeof data.fieldValues !== 'object' ||
+    !data.fieldValues ||
+    !Array.isArray(data.fieldValues)
+  )
+    return false;
   const stateKeys = Object.keys(state.fields);
-  const dataKeys = Object.keys(data.fieldValues);
-  if (dataKeys.length !== stateKeys.length) return false;
-  let arraysMatch = true;
-  for (const value of dataKeys) {
-    if (!stateKeys.includes(value)) {
-      arraysMatch = false;
+  let dataValid = true;
+  data.fieldValues.forEach(([item, index]) => {
+    const dataKeys = Object.keys(item);
+    if (dataKeys.length !== stateKeys.length) dataValid = false;
+    let arraysMatch = true;
+    for (const value of dataKeys) {
+      if (!stateKeys.includes(value)) {
+        arraysMatch = false;
+      }
     }
-  }
-  return arraysMatch;
+    if (!arraysMatch) dataValid = false;
+  });
+
+  return dataValid;
 };
 
 export const addItemsToLibraryContextReducer: Reducer<AddItemsToLibraryContextState, AddItemsToLibraryAction> = (
@@ -75,6 +86,16 @@ export const addItemsToLibraryContextReducer: Reducer<AddItemsToLibraryContextSt
       else {
         throw new Error('Error setting fieldValues - please pass in an object with the "fieldValues" key.');
       }
+    case 'setSingleFieldValueItem':
+      return {
+        ...state,
+        fieldValues: state.fieldValues.map((item, index) => {
+          if (index === data.index) {
+            if (!isRecord(data.item)) throw new Error('please supply a valid item');
+            return { ...item, ...data.item };
+          } else return { ...item };
+        }),
+      };
   }
 };
 
