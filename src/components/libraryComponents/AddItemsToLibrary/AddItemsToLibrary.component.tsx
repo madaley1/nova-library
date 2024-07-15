@@ -6,6 +6,7 @@ import axios from 'axios';
 import { createContext, useEffect, useReducer, useState } from 'react';
 import {
   addItemsToLibraryContextReducer,
+  AddItemsToLibraryContextState,
   AddNewItemsToLibrary,
   initialAddItemsToLibraryContextValue,
 } from './AddItemsToLibraryContext';
@@ -72,7 +73,7 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
 
     const [state, dispatchFormData] = useReducer(addItemsToLibraryContextReducer, newItemData);
 
-    const submitNewItems = (id: string, data: typeof newItemData) => {
+    const submitNewItems = (id: string, data: AddItemsToLibraryContextState) => {
       const submissionData = data;
       axios.post(`${process.env.NEXT_PUBLIC_URL}/api/${id}`, submissionData);
     };

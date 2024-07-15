@@ -3,7 +3,7 @@ import { FieldType, fieldTypes } from '@/utils/libraries/templates';
 import type { Dispatch } from 'react';
 import { Reducer, createContext } from 'react';
 
-type AddItemsToLibraryContextState = {
+export type AddItemsToLibraryContextState = {
   fields: Record<string, FieldType>;
   fieldValues: Record<string, unknown>[];
 };
