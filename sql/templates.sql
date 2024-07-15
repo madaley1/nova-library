@@ -97,3 +97,12 @@ VALUES
         'custom',
         '{"id":"number","title":"string","release_date":"date","genre":"multiSelect"}'
     );
+
+CREATE TABLE
+    books (
+        id NOT NULL AUTO_INCREMENT,
+        string_title varchar(256),
+        date_release_date date,
+        multiSelect_genre varchar(1500),
+        string_isbn varchar(18)
+    )

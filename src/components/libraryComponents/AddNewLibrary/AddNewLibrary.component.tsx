@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useReducer, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { AddNewLibraryContext, addNewLibraryReducer, initialContextValue } from './AddNewLibraryContext';
+import { AddNewLibraryContext, addNewLibraryReducer, initialAddNewLibraryContextValue } from './AddNewLibraryContext';
 import StepOne from './StepOne.component';
 import StepThree from './StepThree.component';
 import StepTwo from './StepTwo.component';
@@ -39,7 +39,6 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
     setStepTwoActive(false);
     setStepThreeActive(true);
   };
-
   const returnToStepTwo = () => {
     setStepTwoActive(true);
     setStepThreeActive(false);
@@ -58,7 +57,7 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
     </>
   );
 
-  const [state, dispatchFormData] = useReducer(addNewLibraryReducer, initialContextValue);
+  const [state, dispatchFormData] = useReducer(addNewLibraryReducer, initialAddNewLibraryContextValue);
   const BodyContent = () => {
     return (
       <AddNewLibraryContext.Provider value={[state, dispatchFormData]}>
