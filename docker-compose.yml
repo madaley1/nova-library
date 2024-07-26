@@ -1,4 +1,3 @@
-version: '1'
 services:
   dashboard:
     container_name: nl-dashboard
@@ -14,7 +13,7 @@ services:
     image: nl-backend
     platform: linux/x86_64
     ports:
-      - 5002:5000
+      - 5002:8000
     volumes:
       - ./backend:/app
   db:
@@ -25,3 +24,26 @@ services:
       - 5003:3306
     volumes:
       - ./database:/db
+    env_file:
+      - .env
+  db-workbench:
+    container_name: db-workbench
+    image: lscr.io/linuxserver/mysql-workbench:latest
+    depends_on:
+      - db
+    restart: always
+    env_file: .env
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Etc/UTC
+      TITLE: Nova Library DB Workbench
+      CUSTOM_USER: ${MYSQL_USER}
+      CUSTOM_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - ${MYSQL_WORKBENCH_PORT}:3000
+      - ${MYSQL_WORKBENCH_PORT_SECURE}:3001
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ./db:/var/lib/mysql

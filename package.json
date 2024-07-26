@@ -1,5 +1,5 @@
 {
-  "name": "zscraper",
+  "name": "nl",
   "scripts": {
     "build-frontend": "docker build -t nl-dashboard --target=dashboard .",
     "build-backend": "docker build -t nl-backend --target=backend .",
