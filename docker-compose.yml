@@ -1,3 +1,5 @@
+
+version: '1'
 services:
   dashboard:
     container_name: nl-dashboard
@@ -48,4 +50,3 @@ services:
       - IPC_LOCK
     volumes:
       - ./db:/var/lib/mysql
-      
