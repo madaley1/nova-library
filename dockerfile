@@ -15,9 +15,9 @@ RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 ADD ./backend /app
 
 EXPOSE 8000
-CMD ["fastapi", "dev", "/app/main.py" ]
+CMD ["fastapi", "dev", "/app/main.py", "--host", "0.0.0.0", "--port", "8000" ]
 
-FROM node:22.4 AS dashboard
+FROM node:20.16 AS dashboard
 WORKDIR /app
 ADD ./dashboard/package.json /app
 
