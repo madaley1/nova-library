@@ -47,3 +47,4 @@ services:
       - IPC_LOCK
     volumes:
       - ./db:/var/lib/mysql
+      
