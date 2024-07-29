@@ -25,7 +25,7 @@ services:
     ports:
       - 5003:3306
     volumes:
-      - ./database:/db
+      - ./database:/database/db
     env_file:
       - .env
   db-workbench:
@@ -49,4 +49,4 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
-      - ./db:/var/lib/mysql
+      - ./database/db:/var/lib/mysql
