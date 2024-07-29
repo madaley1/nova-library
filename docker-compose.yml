@@ -1,37 +1,27 @@
-
-version: '1'
+version: '0.1'
 services:
-  dashboard:
-    container_name: nl-dashboard
-    image: nl-dashboard
-    platform: linux/x86_64
-    ports:
-      - 5001:3000
-    volumes:
-      - ./dashboard:/app
-      - /app/node_modules
-  backend:
-    container_name: nl-backend
-    image: nl-backend
-    platform: linux/x86_64
-    ports:
-      - 5002:8000
-    volumes:
-      - ./backend:/app
   db:
-    container_name: nl-db
-    image: nl-db
+    image: mysql:5.7
     platform: linux/x86_64
+    container_name: db
+    restart: always
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_INTERNAL_PORT}
+      MYSQL_HOST: ${MYSQL_HOST}
     ports:
-      - 5003:3306
+      - ${MYSQL_EXTERNAL_PORT}:${MYSQL_INTERNAL_PORT}
     volumes:
-      - ./database:/db
-    env_file:
-      - .env
+      - ./db:/var/lib/mysql
+      - ./sql:/mnt/db/sql
+    command: [ "mysqld" ]
   db-workbench:
-    container_name: db-workbench
     image: lscr.io/linuxserver/mysql-workbench:latest
-    platform: linux/x86_64
+    container_name: db-workbench
     depends_on:
       - db
     restart: always
@@ -44,8 +34,8 @@ services:
       CUSTOM_USER: ${MYSQL_USER}
       CUSTOM_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - 5504:3000
-      - 5505:3001
+      - ${MYSQL_WORKBENCH_PORT}:3000
+      - ${MYSQL_WORKBENCH_PORT_SECURE}:3001
     cap_add:
       - IPC_LOCK
     volumes:

@@ -28,7 +28,7 @@
     }
   },
   "include": [
-    "dashboard/next-env.d.ts",
+    "next-env.d.ts",
     "**/*.ts",
     "**/*.*.ts",
     "**/*.tsx",
