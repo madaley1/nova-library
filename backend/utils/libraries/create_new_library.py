@@ -37,16 +37,11 @@ def create_new_library(library_title: str, columns: dict[str, str]):
 
 
   create_data_table = create_data_table + ');'
-  print(create_data_table)
-  print(create_column_table)
-  print(create_select_values_table)
-  print(create_multiselect_values_table)
   with engine.connect() as connection:
     connection.execute(text(create_data_table))
     connection.execute(text(create_column_table))
     connection.execute(text(create_select_values_table))
     connection.execute(text(create_multiselect_values_table))
-    connection.execute(text("SHOW TABLES;"))
     connection.close()
 
 create_new_library(library_title="test", columns={"test": "string", "test2": "number"})
