@@ -3,10 +3,6 @@ from utils.connection import engine
 
 column_types = ['string', 'number', 'date', 'select', 'multiSelect']      
 
-# class New_Library(BaseModel): 
-#   library_title: str
-#   columns: dict[str, str]
-
 def check_if_library_exists(library_title: str): 
   with engine.connect() as connection:
     libraries_list = connection.execute(text('SELECT * FROM libraries')).fetchall()
