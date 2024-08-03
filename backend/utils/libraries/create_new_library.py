@@ -1,7 +1,5 @@
 from sqlalchemy import text
 from utils.connection import engine
-from pydantic import BaseModel
-from enum import Enum
 
 column_types = ['string', 'number', 'date', 'select', 'multiSelect']      
 
@@ -9,9 +7,16 @@ column_types = ['string', 'number', 'date', 'select', 'multiSelect']
 #   library_title: str
 #   columns: dict[str, str]
 
+def check_if_library_exists(library_title: str): 
+  with engine.connect() as connection:
+    libraries_list = connection.execute(text('SELECT * FROM libraries')).fetchall()
+    if any('{library_title}'.format(library_title=library_title) in x for x in libraries_list):
+      raise Exception('Library name not unique, please provide a unique library name')
+
 def create_new_library(library_title: str, columns: dict[str, str]):
-  # print(library_title),
-  # print(columns)
+  check_if_library_exists(library_title=library_title)
+
+  add_library_to_list = "INSERT INTO libraries VALUES ('{library_title}')".format(library_title=library_title)
   create_data_table = 'CREATE TABLE {library_title}_data ('.format(library_title=library_title)
   create_column_table = 'CREATE TABLE {library_title}_columns (columns VARCHAR(256) NOT NULL UNIQUE, type TEXT NOT NULL, required BOOLEAN);'.format(library_title=library_title)
   create_select_values_table = 'CREATE TABLE {library_title}_select (columns VARCHAR(256) NOT NULL UNIQUE, select_values TEXT);'.format(library_title=library_title)
@@ -52,17 +57,22 @@ def create_new_library(library_title: str, columns: dict[str, str]):
 
   add_multiselect = add_multiselect.strip(', ')
   add_multiselect = add_multiselect + ';'
+
   with engine.connect() as connection:
+    table_list = connection.execute(text('SHOW TABLES;')).fetchall()
+    print(table_list)
+    if not any('libraries' in x for x in table_list):
+      connection.execute(text('CREATE TABLE libraries (library VARCHAR(256) NOT NULL UNIQUE);'))
+
     connection.execute(text(create_data_table))
     connection.execute(text(create_column_table))
     connection.execute(text(create_select_values_table))
     connection.execute(text(create_multiselect_values_table))
 
     connection.execute(text(add_columns))
-    print(columns.values())
     if "select" in columns.values(): connection.execute(text(add_select))
     if "multiSelect" in columns.values(): connection.execute(text(add_multiselect))
-
+    connection.execute(text(add_library_to_list))
     connection.commit()
     connection.close()
 
