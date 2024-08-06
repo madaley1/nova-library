@@ -27,6 +27,7 @@ const Navbar = () => {
   });
 
   const getNavList = async () => {
+    // Needs to be fixed post-api update
     const getTableList = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/nav`);
     if (getTableList.status !== 200) return;
     const processTableList = await getTableList.json();

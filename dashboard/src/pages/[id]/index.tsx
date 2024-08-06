@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
+  // Needs to be fixed post-api update
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${id}`);
   const data = await response.json();
   return {

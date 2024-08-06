@@ -72,6 +72,7 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
 
   const footerContent = <></>;
   const getTemplates = async () => {
+    // Needs to be fixed post-api update
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/libraries/create`);
     const templateJSON = await response.json();
     if (templateJSON.length > 0) {
