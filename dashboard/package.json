@@ -14,7 +14,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@databases/mysql-test": "^4.0.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.15",
@@ -23,7 +22,6 @@
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
-    "mysql": "^2.18.1",
     "next": "^14.2.4",
     "react": "^18",
     "react-dom": "^18",
