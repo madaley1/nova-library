@@ -1,13 +1,15 @@
 from fastapi import APIRouter
 from . import select
 from . import items
+from utils.libraries.get_existing_libraries import get_existing_libraries
 
 router = APIRouter()
 
 #general library routes
 @router.get('/libraries')
 def get_libraries(): 
-  return {"path": "to get libraries"}
+  libraries = get_existing_libraries()
+  return {"libraries": libraries}
 
 @router.post('/libraries')
 def add_library(): 

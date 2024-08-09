@@ -11,4 +11,5 @@ def get_existing_libraries():
     for row in response:
       processed_response.append(row[0])
     libraries_response = processed_response
+    connection.commit()
   return libraries_response

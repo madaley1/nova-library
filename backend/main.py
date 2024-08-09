@@ -3,7 +3,6 @@ from routes.libraries import libraries
 
 app = FastAPI()
 
-
 @app.get("/")
 def root():
     return {"message": 'Welcome to Nova Library!'}

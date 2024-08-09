@@ -1,9 +1,13 @@
 FROM mysql:5.7 AS db
 WORKDIR /db
 ADD ./database /db
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+ARG MYSQL_DATABASE
 
 EXPOSE 3306
-
+WORKDIR /
+ADD database/sql/db.sql /docker-entrypoint-initdb.d
 CMD ["mysqld"]
 
 FROM python:3.12 AS backend
