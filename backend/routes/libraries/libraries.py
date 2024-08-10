@@ -1,10 +1,9 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-import json
 from . import select
 from . import items
 from utils.libraries.get_existing_libraries import get_existing_libraries
-from utils.libraries.create_new_library import create_new_library
+from utils.libraries.create_new_library import create_new_library, Columns
 from utils.libraries.get_specific_library import get_specific_library
 from utils.libraries.delete_existing_library import delete_existing_library
 
@@ -18,12 +17,14 @@ def get_libraries():
   return {"libraries": libraries}
 
 class Add_Library(BaseModel):
-  library_title: str
-  columns: dict[str, str]
+  library_title: str 
+  columns: dict[str, Columns] 
 
 @router.post('/libraries')
 def add_library(body: Add_Library): 
-  new_library = create_new_library(library_title=body.library_title, columns=body.columns)
+  title= body.library_title
+  columns = body.columns
+  new_library = create_new_library(library_title=title, columns=columns)
   return new_library
 
 #specific library routes
@@ -45,7 +46,6 @@ def get_existing_library(library: str):
           "column_required": specific_library[data][i][2]
         }
         specific_library[data][i] = newRow
-  print(specific_library)
   return {**specific_library}
 
 # commented out since I think I need to build out some ideas for how to achieve this more solidly
