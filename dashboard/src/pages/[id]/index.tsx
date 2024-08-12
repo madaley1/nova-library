@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
   // Needs to be fixed post-api update
-  const response = await axios.get(`http://172.17.0.1:5002/libraries/${id}`);
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_SSR_API_URL}/libraries/${id}`);
   const { data } = response;
   return {
     props: { data, id },

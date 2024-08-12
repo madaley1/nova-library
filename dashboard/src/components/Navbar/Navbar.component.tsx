@@ -38,7 +38,7 @@ const Navbar = () => {
   });
 
   const getNavList = async () => {
-    const getLibrariesRequest = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/libraries`);
+    const getLibrariesRequest = await axios.get(`${process.env.NEXT_PUBLIC_BROWSER_API_URL}/libraries`);
     if (getLibrariesRequest.status !== 200) return;
     const response = getLibrariesRequest.data;
     if (response.libraries.length === 0) return;
