@@ -1,6 +1,6 @@
 import AddNewItemModal from '@/components/libraryComponents/AddItemsToLibrary';
 import { EditRowModal } from '@/components/libraryComponents/EditRow.component';
-import { setColumnNames, setMultiSelectData, setResourceData, setSelectData } from '@/resources/resourceData';
+import { setColumnData, setMultiSelectData, setResourceData, setSelectData } from '@/resources/resourceData';
 import { IRootState } from '@/resources/store';
 import { parseMultiSelect } from '@/utils/libraries/multiSelect';
 import { FieldType } from '@/utils/libraries/templates';
@@ -52,7 +52,7 @@ type ColumnData = {
   column_type: FieldType;
   column_required: 0 | 1;
 };
-const processColumnNames = (columnData: ColumnData[]) => {
+export const processColumnNames = (columnData: ColumnData[]) => {
   const columnNames = columnData.map((column) => column.column_name);
   columnNames.unshift('id');
   return columnNames;
@@ -85,13 +85,13 @@ export default function Index({ data, id }: Record<string, any>) {
   };
 
   const columns: GridColDef[] =
-    resourceData.columnNames ?
-      resourceData.columnNames.map((column: string) => {
-        const splitName = column.split('_');
+    resourceData.columnData ?
+      resourceData.columnData.map((column: ColumnData) => {
+        const splitName = column.column_name.split('_');
         return {
-          field: column,
-          headerName: splitName.length > 1 ? splitName.splice(1).join(' ') : column,
-          hideable: column === 'id',
+          field: column.column_name,
+          headerName: splitName.length > 1 ? splitName.splice(1).join(' ') : column.column_name,
+          hideable: column.column_name === 'id',
         };
       })
     : [];
@@ -115,13 +115,13 @@ export default function Index({ data, id }: Record<string, any>) {
   useEffect(() => {
     const columnNames = processColumnNames(data.column_data);
     const rows = processRows(columnNames, data.data);
-    dispatch(setColumnNames(columnNames));
+    dispatch(setColumnData(data.column_data));
     dispatch(setResourceData(rows));
   }, []);
 
   return (
     <PageIdContextProvider.Provider value={id}>
-      {resourceData.columnNames ?
+      {resourceData.columnData ?
         <DataGrid
           columns={columns}
           rows={resourceData.currentData}
@@ -150,11 +150,7 @@ export default function Index({ data, id }: Record<string, any>) {
           <Button>Delete All</Button>
         </Grid>
       </Grid>
-      {/* <AddNewItemModal
-        open={addNewItemModalOpen}
-        closeModal={closeAddNewItemModal}
-        columnNames={resourceData.columnNames}
-      /> */}
+      <AddNewItemModal open={addNewItemModalOpen} closeModal={closeAddNewItemModal} />
       <EditRowModal open={editModalOpen} closeModal={closeEditModal} />
     </PageIdContextProvider.Provider>
   );

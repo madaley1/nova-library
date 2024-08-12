@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import resourceData, { setColumnNames, setResourceData } from '../resourceData';
+import resourceData, { setColumnData, setResourceData } from '../resourceData';
 
 describe('resourceData', () => {
   const starterData = {
@@ -15,7 +15,7 @@ describe('resourceData', () => {
       editModalData: <Record<string, any>>{},
     };
 
-    expect(resourceData(starterData, setColumnNames(valueArray))).toEqual(valuesData);
+    expect(resourceData(starterData, setColumnData(valueArray))).toEqual(valuesData);
   });
   it('should update currentData', () => {
     const replacementValues = { test: 'test' };

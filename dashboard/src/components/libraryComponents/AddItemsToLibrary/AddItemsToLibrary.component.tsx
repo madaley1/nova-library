@@ -1,9 +1,11 @@
 import Modal from '@/components/Modal';
-import { PageIdContextProvider } from '@/pages/[id]';
+import { PageIdContextProvider, processColumnNames } from '@/pages/[id]';
+import { IRootState } from '@/resources/store';
 import { FieldType, isFieldType } from '@/utils/libraries/templates';
 import { Box, Button, Container, Typography } from '@mui/material';
 import axios from 'axios';
 import { createContext, useEffect, useReducer, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addItemsToLibraryContextReducer,
   AddItemsToLibraryContextState,
@@ -15,7 +17,6 @@ import { ItemFieldRouter } from './ItemFieldRouter.component';
 type AddNewItemModalProps = {
   open: boolean;
   closeModal: () => void;
-  columnNames: string[];
 };
 
 type FieldEntry = {
@@ -26,46 +27,34 @@ type FieldEntry = {
 export const ItemIndexProvider = createContext(0);
 
 export const AddNewItemModal = (props: AddNewItemModalProps) => {
-  const { columnNames, open, closeModal } = props;
-  const [formattedColumnNames, setFormattedColumnNames] = useState(Array<FieldEntry>());
+  const { open, closeModal } = props;
+  const resourceData = useSelector((state: IRootState) => state.resourceData);
+  const [columnNames, setColumnNames] = useState<string[]>([]);
 
   useEffect(() => {
-    const extractedNamesAndTypes = [...columnNames].filter((item) => item !== 'id').map((item) => item.split('_'));
-
-    const formattedFieldTypes = extractedNamesAndTypes.map((arr) => {
-      const temp = [...arr];
-      temp.shift();
-
-      if (!isFieldType(arr[0])) throw new Error('fieldtype not found');
-      return {
-        name: temp.join(' '),
-        type: arr[0],
-      };
-    });
-    setFormattedColumnNames(formattedFieldTypes);
-  }, [columnNames]);
+    setColumnNames(processColumnNames(resourceData.columnData));
+  }, []);
 
   const BodyContent = () => {
     const initialFieldData = initialAddItemsToLibraryContextValue;
     initialFieldData.fieldValues[0] = {};
-    columnNames.forEach((value) => {
-      if (value === 'id') return;
-      const columnType = value.split('_')[0];
-      if (!isFieldType(columnType))
+    resourceData.columnData.forEach((column) => {
+      if (!isFieldType(column.column_type))
         throw new Error('Something has gone wrong, field type was not found in available options');
-      initialFieldData.fields[value] = columnType;
-      switch (columnType) {
+      const { column_name, column_type } = column;
+      initialFieldData.fields[column_name] = column_type;
+      switch (column_type) {
         case 'string' || 'select':
-          initialFieldData.fieldValues[0][value] = '';
+          initialFieldData.fieldValues[0][column_name] = '';
           break;
         case 'number':
-          initialFieldData.fieldValues[0][value] = 0;
+          initialFieldData.fieldValues[0][column_name] = 0;
           break;
         case 'date':
-          initialFieldData.fieldValues[0][value] = undefined;
+          initialFieldData.fieldValues[0][column_name] = undefined;
           break;
         case 'multiSelect':
-          initialFieldData.fieldValues[0][value] = Array<string>();
+          initialFieldData.fieldValues[0][column_name] = Array<string>();
       }
     });
 
@@ -116,7 +105,7 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
                         Remove Item
                       </Button>
                     </Box>
-                    {formattedColumnNames.map((column, index) => {
+                    {resourceData.columnData.map((column, index) => {
                       return (
                         <Box key={index} sx={{ display: 'flex', flexFlow: 'row nowrap' }}>
                           <Box
@@ -129,12 +118,14 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
                               textTransform: 'capitalize',
                             }}
                           >
-                            <p>{column.name}</p>
+                            <p>
+                              {column.column_name} (type: {column.column_type})
+                            </p>
                           </Box>
                           <Box sx={{ display: 'flex', flexFlow: 'column nowrap', height: '5em', width: '15em' }}>
                             <ItemFieldRouter
-                              fieldTitle={`${column.type}_${column.name.split(' ').join('_')}`}
-                              type={column.type}
+                              fieldTitle={`${column.column_type}_${column.column_name.split(' ').join('_')}`}
+                              type={column.column_type}
                             />
                           </Box>
                         </Box>
