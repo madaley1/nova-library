@@ -6,8 +6,8 @@ const resourceData = createSlice({
     currentData: Array<Record<string, any>>(),
     columnNames: Array<string>(),
     editModalData: <Record<string, any>>{},
-    multiSelectData: <Record<string, string[]>>{},
     selectData: <Record<string, string[]>>{},
+    multiSelectData: <Record<string, string[]>>{},
   },
   reducers: {
     setResourceData: (state, action) => ({ ...state, currentData: action.payload }),

@@ -3,8 +3,10 @@ import { EditRowModal } from '@/components/libraryComponents/EditRow.component';
 import { setColumnNames, setMultiSelectData, setResourceData, setSelectData } from '@/resources/resourceData';
 import { IRootState } from '@/resources/store';
 import { parseMultiSelect } from '@/utils/libraries/multiSelect';
+import { FieldType } from '@/utils/libraries/templates';
 import { Button, Grid } from '@mui/material';
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid';
+import axios from 'axios';
 import { NextPageContext } from 'next';
 import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,14 +14,59 @@ import { useDispatch, useSelector } from 'react-redux';
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
   // Needs to be fixed post-api update
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/${id}`);
-  const data = await response.json();
+  const response = await axios.get(`http://172.17.0.1:5002/libraries/${id}`);
+  const { data } = response;
   return {
     props: { data, id },
   };
 }
 
 export const PageIdContextProvider = createContext('');
+
+// example object
+// {
+//   "data": [],
+//   "column_data": [
+//       {
+//           "column_name": "test",
+//           "column_type": "string",
+//           "column_required": 1
+//       },
+//       {
+//           "column_name": "test1",
+//           "column_type": "date",
+//           "column_required": 0
+//       },
+//       {
+//           "column_name": "test2",
+//           "column_type": "number",
+//           "column_required": 0
+//       }
+//   ],
+//   "select_data": [],
+//   "multislect_data": []
+// }
+
+type ColumnData = {
+  column_name: string;
+  column_type: FieldType;
+  column_required: 0 | 1;
+};
+const processColumnNames = (columnData: ColumnData[]) => {
+  const columnNames = columnData.map((column) => column.column_name);
+  columnNames.unshift('id');
+  return columnNames;
+};
+
+const processRows = (columns: Array<string>, data: Array<Array<any>>) => {
+  return data.map((item) => {
+    const row: Record<string, any> = {};
+    for (let i = 0; i < columns.length; i++) {
+      row[columns[i]] = item[i];
+    }
+    return row;
+  });
+};
 
 export default function Index({ data, id }: Record<string, any>) {
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -39,11 +86,14 @@ export default function Index({ data, id }: Record<string, any>) {
 
   const columns: GridColDef[] =
     resourceData.columnNames ?
-      resourceData.columnNames.map((column: string) => ({
-        field: column,
-        headerName: column.split('_').splice(1).join(' '),
-        hideable: column === 'id',
-      }))
+      resourceData.columnNames.map((column: string) => {
+        const splitName = column.split('_');
+        return {
+          field: column,
+          headerName: splitName.length > 1 ? splitName.splice(1).join(' ') : column,
+          hideable: column === 'id',
+        };
+      })
     : [];
   columns.push({
     field: 'edit',
@@ -62,39 +112,12 @@ export default function Index({ data, id }: Record<string, any>) {
     },
   });
 
-  const getMultiSelectValues = (resourceData: any) => {
-    const multiSelectFields = resourceData.columnNames.filter((column: string) => column.startsWith('multiSelect'));
-    const multiSelectData: Record<string, string[]> = {};
-    for (const field of multiSelectFields) {
-      const allMultiSelectArrays = resourceData.currentData.map((item: Record<string, any>) => {
-        return item[field] === '' ? [] : parseMultiSelect(item[field]);
-      });
-      multiSelectData[field] = [...new Set<string>(allMultiSelectArrays.flatMap((arr: string[]) => arr))];
-    }
-    return multiSelectData;
-  };
-  const getSelectValues = (resourceData: any) => {
-    const selectFields = resourceData.columnNames.filter((column: string) => column.startsWith('select'));
-    const selectData: Record<string, string[]> = {};
-    for (const field of selectFields) {
-      const allSelectArrays = resourceData.currentData.map((item: Record<string, any>) => {
-        return item[field];
-      });
-      selectData[field] = [...new Set<string>(...allSelectArrays)];
-    }
-    return selectData;
-  };
-
   useEffect(() => {
-    dispatch(setResourceData(data.currentData));
-    dispatch(setColumnNames(data.columnNames));
+    const columnNames = processColumnNames(data.column_data);
+    const rows = processRows(columnNames, data.data);
+    dispatch(setColumnNames(columnNames));
+    dispatch(setResourceData(rows));
   }, []);
-  useEffect(() => {
-    if (resourceData.currentData.length > 0) {
-      dispatch(setMultiSelectData(getMultiSelectValues(resourceData)));
-      dispatch(setSelectData(getSelectValues(resourceData)));
-    }
-  }, [resourceData.currentData]);
 
   return (
     <PageIdContextProvider.Provider value={id}>
@@ -127,11 +150,11 @@ export default function Index({ data, id }: Record<string, any>) {
           <Button>Delete All</Button>
         </Grid>
       </Grid>
-      <AddNewItemModal
+      {/* <AddNewItemModal
         open={addNewItemModalOpen}
         closeModal={closeAddNewItemModal}
         columnNames={resourceData.columnNames}
-      />
+      /> */}
       <EditRowModal open={editModalOpen} closeModal={closeEditModal} />
     </PageIdContextProvider.Provider>
   );

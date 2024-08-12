@@ -7,7 +7,7 @@ fetchMocks.enableMocks();
 // import { setupServer } from 'msw/node';
 
 // const handlers = [
-//   http.get(`${process.env.NEXT_PUBLIC_URL}/api/nav`, () => {
+//   http.get(`${process.env.NEXT_PUBLIC_API_URL}/api/nav`, () => {
 //     return HttpResponse.json([]);
 //   }),
 // ];

@@ -5,7 +5,18 @@ import { toggleDarkMode } from '@/resources/userSettings';
 import AddIcon from '@mui/icons-material/Add';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Settings from '@mui/icons-material/Settings';
-import { Box, Button, Container, Link, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  responsiveFontSizes,
+  Typography,
+} from '@mui/material';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import style from './Navbar.module.scss';
@@ -27,21 +38,20 @@ const Navbar = () => {
   });
 
   const getNavList = async () => {
-    // Needs to be fixed post-api update
-    const getTableList = await fetch(`${process.env.NEXT_PUBLIC_URL}/nav`);
-    if (getTableList.status !== 200) return;
-    const processTableList = await getTableList.json();
-    const newNavList = processTableList.map((data: Record<string, string>) => {
-      if (!data.table_name) return {};
+    const getLibrariesRequest = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/libraries`);
+    if (getLibrariesRequest.status !== 200) return;
+    const response = getLibrariesRequest.data;
+    if (response.libraries.length === 0) return;
+    const processedLibrariesList = response.libraries.map((item: string) => {
       return {
-        href: data.table_name,
+        href: `/${item}`,
         title: (function () {
-          const name = data.table_name.split('_').join(' ');
+          const name = item.split('_').join(' ');
           return name.charAt(0).toUpperCase() + name.slice(1);
         })(),
       };
     });
-    navList === newNavList ? null : dispatch(setNavData(newNavList));
+    dispatch(setNavData(processedLibrariesList));
   };
 
   useEffect(() => {
@@ -64,7 +74,7 @@ const Navbar = () => {
               );
             })}
           </>
-        : <Typography>No Libraries Available</Typography> || <Typography>Loading...</Typography>}
+        : <Typography>No Libraries Available</Typography>}
         <Button
           sx={{ display: 'flex', flexFlow: 'row nowrap', textWrap: 'nowrap', width: 'max-content' }}
           onClick={openAddNewLibrary}

@@ -76,7 +76,7 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
     const submitNewItems = (id: string, data: AddItemsToLibraryContextState) => {
       const submissionData = data;
       // Needs to be fixed post-api update
-      axios.post(`${process.env.NEXT_PUBLIC_URL}/${id}`, submissionData);
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, submissionData);
     };
     const addAnotherItem = () => {
       const currentData = state;

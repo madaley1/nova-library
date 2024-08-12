@@ -11,7 +11,7 @@ let navContainsValues = false;
 const navValues = [{ table_name: 'books' }, { table_name: 'movies' }];
 
 function mockHandler(url: string | URL | Request): Promise<Response> {
-  const path = (url as string).split(`${process.env.NEXT_PUBLIC_URL}/`)[1];
+  const path = (url as string).split(`${process.env.NEXT_PUBLIC_API_URL}/`)[1];
   if (path === 'api/nav') {
     return navContainsValues ? existingNavValues(navValues) : emptyNavValues;
   } else if (path === 'api/libraries/create') {

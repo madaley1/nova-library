@@ -54,7 +54,7 @@ const StepThree = (props: StepThreeProps) => {
               <Button
                 onClick={async () => {
                   // Needs to be fixed post-api update
-                  const rawResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/libraries/create`, {
+                  const rawResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/libraries/create`, {
                     method: 'POST',
                     body: JSON.stringify(state),
                   });

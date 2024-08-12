@@ -73,17 +73,17 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
   const footerContent = <></>;
   const getTemplates = async () => {
     // Needs to be fixed post-api update
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/libraries/create`);
-    const templateJSON = await response.json();
-    if (templateJSON.length > 0) {
-      const procesedTemplates: libraryTemplate[] = templateJSON.map((template: any) => {
-        const { title, fields } = template;
-        return { title, fields: JSON.parse(fields) };
-      });
-      dispatch(setTemplates(procesedTemplates));
-    } else {
-      dispatch(setTemplates(templateJSON));
-    }
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/libraries/create`);
+    // const templateJSON = await response.json();
+    // if (templateJSON.length > 0) {
+    //   const procesedTemplates: libraryTemplate[] = templateJSON.map((template: any) => {
+    //     const { title, fields } = template;
+    //     return { title, fields: JSON.parse(fields) };
+    //   });
+    //   dispatch(setTemplates(procesedTemplates));
+    // } else {
+    //   dispatch(setTemplates(templateJSON));
+    // }
   };
 
   useEffect(() => {
