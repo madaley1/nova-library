@@ -4,7 +4,7 @@ import { AddNewItemsToLibrary } from './AddItemsToLibraryContext';
 import { FieldProps } from './ItemFieldRouter.component';
 
 export const NumberField = (props: FieldProps) => {
-  const { fieldTitle } = props;
+  const { fieldTitle, required } = props;
   const splitFieldTitle = fieldTitle.split('_');
   const capitalizeTitle = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -25,10 +25,11 @@ export const NumberField = (props: FieldProps) => {
                 type="number"
                 label={title}
                 value={fieldValues[itemIndex][fieldTitle]}
+                required={required}
                 onChange={(e) => {
                   newState.fieldValues[itemIndex] = {
                     ...newState.fieldValues[itemIndex],
-                    [fieldTitle]: e.target.value,
+                    [fieldTitle]: parseInt(e.target.value),
                   };
                   dispatch({
                     type: 'setSingleFieldValueItem',

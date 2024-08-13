@@ -6,7 +6,7 @@ import { AddNewItemsToLibrary } from './AddItemsToLibraryContext';
 import { FieldProps } from './ItemFieldRouter.component';
 
 export const DateField = (props: FieldProps) => {
-  const { fieldTitle } = props;
+  const { fieldTitle, required } = props;
   const splitFieldTitle = fieldTitle.split('_');
   const capitalizeTitle = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -28,12 +28,13 @@ export const DateField = (props: FieldProps) => {
                   label={title}
                   value={fieldValues[itemIndex][fieldTitle] as Dayjs}
                   format={'YYYY/MM/DD'}
+                  required={required}
                   onChange={(e, error) => {
                     if (!e) return;
                     if (e.isValid()) {
                       newState.fieldValues[itemIndex] = {
                         ...newState.fieldValues[itemIndex],
-                        [fieldTitle]: e.toDate(),
+                        [fieldTitle]: e.format('YYYY-MM-DD'),
                       };
                       dispatch({
                         type: 'setSingleFieldValueItem',

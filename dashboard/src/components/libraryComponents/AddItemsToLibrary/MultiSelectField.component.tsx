@@ -7,7 +7,7 @@ import { AddNewItemsToLibrary } from './AddItemsToLibraryContext';
 import { FieldProps } from './ItemFieldRouter.component';
 
 export const MultiSelectField = (props: FieldProps) => {
-  const { fieldTitle } = props;
+  const { fieldTitle, required } = props;
   const [selectValue, setSelectValue] = useState(Array<string>());
   const splitFieldTitle = fieldTitle.split('_');
   const capitalizeTitle = (string: string) => {
@@ -30,6 +30,7 @@ export const MultiSelectField = (props: FieldProps) => {
                 multiple
                 defaultValue={Array<string>()}
                 value={selectValue}
+                required={required}
                 onChange={(e) => {
                   const { value } = e.target;
                   setSelectValue(typeof value === 'string' ? value.split(',') : value);

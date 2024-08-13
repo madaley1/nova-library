@@ -5,17 +5,7 @@ import { toggleDarkMode } from '@/resources/userSettings';
 import AddIcon from '@mui/icons-material/Add';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Settings from '@mui/icons-material/Settings';
-import {
-  Box,
-  Button,
-  Container,
-  Link,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  responsiveFontSizes,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Container, Link, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

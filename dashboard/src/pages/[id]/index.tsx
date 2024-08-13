@@ -23,30 +23,6 @@ export async function getServerSideProps(context: NextPageContext) {
 
 export const PageIdContextProvider = createContext('');
 
-// example object
-// {
-//   "data": [],
-//   "column_data": [
-//       {
-//           "column_name": "test",
-//           "column_type": "string",
-//           "column_required": 1
-//       },
-//       {
-//           "column_name": "test1",
-//           "column_type": "date",
-//           "column_required": 0
-//       },
-//       {
-//           "column_name": "test2",
-//           "column_type": "number",
-//           "column_required": 0
-//       }
-//   ],
-//   "select_data": [],
-//   "multislect_data": []
-// }
-
 type ColumnData = {
   column_name: string;
   column_type: FieldType;

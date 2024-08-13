@@ -4,7 +4,7 @@ import { AddNewItemsToLibrary } from './AddItemsToLibraryContext';
 import { FieldProps } from './ItemFieldRouter.component';
 
 export const StringField = (props: FieldProps) => {
-  const { fieldTitle } = props;
+  const { fieldTitle, required } = props;
   const splitFieldTitle = fieldTitle.split('_');
   const capitalizeTitle = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -23,6 +23,7 @@ export const StringField = (props: FieldProps) => {
               <TextField
                 label={title}
                 value={newState.fieldValues[itemIndex][fieldTitle]}
+                required={required}
                 onChange={(e) => {
                   newState.fieldValues[itemIndex] = {
                     ...newState.fieldValues[itemIndex],

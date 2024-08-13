@@ -23,8 +23,10 @@ const dataIsContextState = (
   state: AddItemsToLibraryContextState,
   data: unknown,
 ): data is AddItemsToLibraryContextState => {
-  if (isRecord(data)) return Object.keys(state) === Object.keys(data);
-  return false;
+  if (!isRecord(data)) return false;
+  const stateKeys = Object.keys(state);
+  for (const key of Object.keys(data)) if (!stateKeys.includes(key)) return false;
+  return true;
 };
 
 const dataIsFields = (data: unknown): data is Omit<AddItemsToLibraryContextState, 'fieldValues'> => {
@@ -74,7 +76,7 @@ export const addItemsToLibraryContextReducer: Reducer<AddItemsToLibraryContextSt
       if (dataIsContextState(state, data)) {
         return { ...state, ...data };
       } else {
-        throw new Error('Error setting context - please pass in an object with keys "fields" and fieldValues');
+        throw new Error('Error setting context - please pass in an object with keys "fields" and "fieldValues"');
       }
     case 'setFields':
       if (dataIsFields(data)) return { ...state, fields: data.fields };

@@ -1,5 +1,6 @@
 import Modal from '@/components/Modal';
 import { PageIdContextProvider, processColumnNames } from '@/pages/[id]';
+import { setResourceData } from '@/resources/resourceData';
 import { IRootState } from '@/resources/store';
 import { FieldType, isFieldType } from '@/utils/libraries/templates';
 import { Box, Button, Container, Typography } from '@mui/material';
@@ -35,7 +36,7 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
     setColumnNames(processColumnNames(resourceData.columnData));
   }, []);
 
-  const BodyContent = () => {
+  const initializeFields = () => {
     const initialFieldData = initialAddItemsToLibraryContextValue;
     initialFieldData.fieldValues[0] = {};
     resourceData.columnData.forEach((column) => {
@@ -57,15 +58,38 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
           initialFieldData.fieldValues[0][column_name] = Array<string>();
       }
     });
+    return initialFieldData;
+  };
+
+  const BodyContent = () => {
+    const initialFieldData = initializeFields();
+    const dispatch = useDispatch();
 
     const [newItemData, setNewItemData] = useState(initialFieldData);
 
     const [state, dispatchFormData] = useReducer(addItemsToLibraryContextReducer, newItemData);
 
-    const submitNewItems = (id: string, data: AddItemsToLibraryContextState) => {
+    const submitNewItems = async (id: string, data: AddItemsToLibraryContextState) => {
       const submissionData = data;
-      // Needs to be fixed post-api update
-      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, submissionData);
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BROWSER_API_URL}/libraries/${id}/items`,
+          submissionData.fieldValues,
+        );
+        if (response.status !== 200) throw new Error('Something went wrong, please try again');
+        setNewItemData({ ...initialFieldData });
+        dispatchFormData({ type: 'setContext', data: { ...initialFieldData } });
+        const updatedData = structuredClone(resourceData.currentData);
+        const dataLength = updatedData.length;
+        for (let i = 0; i < submissionData.fieldValues.length; i++) {
+          updatedData.push({ id: dataLength + 1, ...submissionData.fieldValues[i] });
+        }
+        console.log(updatedData, submissionData.fieldValues);
+        dispatch(setResourceData(updatedData));
+        closeModal();
+      } catch (err) {
+        console.error(err);
+      }
     };
     const addAnotherItem = () => {
       const currentData = state;
@@ -124,8 +148,9 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
                           </Box>
                           <Box sx={{ display: 'flex', flexFlow: 'column nowrap', height: '5em', width: '15em' }}>
                             <ItemFieldRouter
-                              fieldTitle={`${column.column_type}_${column.column_name.split(' ').join('_')}`}
+                              fieldTitle={`${column.column_name.split(' ').join('_')}`}
                               type={column.column_type}
+                              required={column.column_required === 1}
                             />
                           </Box>
                         </Box>
