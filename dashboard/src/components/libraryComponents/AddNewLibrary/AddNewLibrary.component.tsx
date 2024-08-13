@@ -49,7 +49,7 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
       <Typography variant="h5" component="h2">
         Add New Library
         {(function () {
-          if (stepOneActive) return ' - Select Template';
+          if (stepOneActive) return ' - Name Library';
           if (stepTwoActive) return ' - Customize Library';
           if (stepThreeActive) return ' - Confirm Library';
         })()}
@@ -87,7 +87,7 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
   };
 
   useEffect(() => {
-    getTemplates();
+    // getTemplates();
   }, []);
 
   return (
