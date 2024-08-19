@@ -84,7 +84,6 @@ export const AddNewItemModal = (props: AddNewItemModalProps) => {
         for (let i = 0; i < submissionData.fieldValues.length; i++) {
           updatedData.push({ id: dataLength + 1, ...submissionData.fieldValues[i] });
         }
-        console.log(updatedData, submissionData.fieldValues);
         dispatch(setResourceData(updatedData));
         closeModal();
       } catch (err) {

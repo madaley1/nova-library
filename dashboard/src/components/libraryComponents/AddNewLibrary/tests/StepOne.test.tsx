@@ -21,8 +21,8 @@ import StepOne from '../StepOne.component';
 
 describe('StepOne', () => {
   const state: AddNewLibraryContextState = {
-    title: '',
-    fields: {},
+    library_title: '',
+    columns: {},
   };
   beforeAll(() => {
     store.dispatch(

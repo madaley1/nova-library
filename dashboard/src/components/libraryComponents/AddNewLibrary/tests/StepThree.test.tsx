@@ -12,8 +12,8 @@ import StepThree from '../StepThree.component';
 
 describe('StepThree', () => {
   const state: AddNewLibraryContextState = {
-    title: 'books',
-    fields: { id: 'number', title: 'string', release_date: 'date', genre: 'multiSelect', isbn: 'string' },
+    library_title: 'books',
+    columns: { id: 'number', title: 'string', release_date: 'date', genre: 'multiSelect', isbn: 'string' },
   };
 
   it('should render the library details', () => {

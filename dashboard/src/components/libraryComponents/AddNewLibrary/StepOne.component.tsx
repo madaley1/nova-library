@@ -42,9 +42,9 @@ const StepOne = (props: StepOneProps) => {
         <Typography variant="h5">Library Title:</Typography>
         <TextField
           label="Library Title"
-          defaultValue={newState.title}
+          defaultValue={newState.library_title}
           onChange={(e) => {
-            newState.title = e.target.value;
+            newState.library_title = e.target.value;
             // setData({ ...updatedState });
           }}
         ></TextField>

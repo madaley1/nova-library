@@ -23,10 +23,11 @@ const StepTwo = (props: StepTwoProps) => {
 
         return (
           <Container sx={{ display: `${props.active ? 'flex' : 'none'}`, flexFlow: 'column nowrap' }}>
-            {Object.entries(state.fields)
+            {Object.entries(state.columns)
               .filter((entry) => entry[0] !== 'id')
               .map((field, index) => {
-                const [title, type] = field;
+                const [title, col] = field;
+                const { column_type, required } = col;
                 return (
                   <Box key={index} sx={{ display: 'flex', flexFlow: 'row nowrap' }}>
                     <Box
@@ -42,35 +43,75 @@ const StepTwo = (props: StepTwoProps) => {
                         label="Field Name"
                         defaultValue={title}
                         onChange={(e) => {
-                          const fieldEntries = Object.entries(newState.fields).map(([key, value], entry) => {
-                            if (entry === index) return [e.target.value, value];
-                            else return [key, value];
+                          // this needs tweaking so that I can set the value to what the user types and it just creates an error state in the ui.
+                          const fieldEntries = Object.entries(newState.columns).map(([key, value], entry) => {
+                            // if (Object.keys(newState.columns).includes(e.target.value)) {
+                            //   console.log('set error');
+                            // } else if (entry === index) return [e.target.value, { ...value }];
+                            // else return [key, { ...value }];
+
+                            if (entry === index && !Object.keys(newState.columns).includes(e.target.value))
+                              return [e.target.value, { ...value }];
+                            else return [key, { ...value }];
                           });
+
                           const fieldEntriesObject = Object.fromEntries(fieldEntries);
-                          newState = { ...newState, fields: fieldEntriesObject };
-                          // console.log(newState);
+                          console.log(fieldEntriesObject);
+                          newState = { ...newState, columns: fieldEntriesObject };
+                          console.log(newState.columns);
                         }}
                         onBlur={() => {
-                          // console.log(newState.fields);
-                          setFields(newState.fields);
+                          setFields(newState.columns);
                         }}
                       ></TextField>
                     </Box>
                     <Box sx={{ display: 'flex', flexFlow: 'column nowrap', height: '5em', width: '15em' }}>
                       <Select
                         label="Field Type"
-                        defaultValue={type}
+                        defaultValue={column_type}
                         onChange={(e) => {
                           if (valueIsFieldType(e.target.value))
-                            newState = { ...newState, fields: { ...newState.fields, [title]: e.target.value } };
+                            newState = {
+                              ...newState,
+                              columns: {
+                                ...newState.columns,
+                                [title]: { ...newState.columns[title], column_type: e.target.value },
+                              },
+                            };
                         }}
-                        onBlur={() => setFields(newState.fields)}
+                        onBlur={() => setFields(newState.columns)}
                       >
                         {fieldTypes.map((type) => (
                           <MenuItem value={type} key={title + type} sx={{ width: '100%', textTransform: 'capitalize' }}>
                             {type}
                           </MenuItem>
                         ))}
+                      </Select>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexFlow: 'column nowrap', height: '5em', width: '15em' }}>
+                      <Select
+                        label="Required"
+                        defaultValue={required ? 'True' : 'False'}
+                        onChange={(e) => {
+                          newState = {
+                            ...newState,
+                            columns: {
+                              ...newState.columns,
+                              [title]: {
+                                ...newState.columns[title],
+                                required: e.target.value === 'True' ? true : false,
+                              },
+                            },
+                          };
+                        }}
+                        onBlur={() => setFields(newState.columns)}
+                      >
+                        <MenuItem value={'True'} sx={{ width: '100%', textTransform: 'capitalize' }}>
+                          True
+                        </MenuItem>
+                        <MenuItem value={'False'} sx={{ width: '100%', textTransform: 'capitalize' }}>
+                          False
+                        </MenuItem>
                       </Select>
                     </Box>
                   </Box>
