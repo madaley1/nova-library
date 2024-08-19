@@ -8,7 +8,7 @@ This is a repo that is still in development, and does not have a public image re
 
 1. First set up your db credentials by copying .env.template and renaming it .env and filling out the dummy data with valid credentials
 2. If you do not have docker installed, now is the time to do so. You can start [here](https://docs.docker.com/get-docker/)
-3. next run `npm run build-all` to build the images necessary to run the app
+3. Next, run `npm run build-all` to build the images necessary to run the app
 4. Once everything is built, run `npm run start-all` to spin up the containers
 5. Everything should be running, and you should be able to start using the frontend at https://localhost:5001, or whatever port you chose if you set it manually
 
