@@ -4,7 +4,7 @@ Nova Library is a custom library management software that is hosted with docker.
 Nova Library is an ongoing project, so some features may either be not fully implemented or still in the backlog. If you're interested in helping out, I'm more than open to working with others! That being said, the repo is in need of refactoring for readability, as it was recently overhauled architecturally. It is in working condition, but is not fully shaped around the new architecture (particularly the dashboard/frontend).
 
 # Getting Started with Development
-As this is a repo that is still in development, it is not currently in a minimally viable state, and does not have a public image released. If you want to build it for development or just to play around with, you can do so with the following steps: 
+This is a repo that is still in development, and does not have a public image released due to not meeting a minimally viable state for release. If you want to build it for development or just to play around with, you can do so with the following steps: 
 
 1. First set up your db credentials by copying .env.template and renaming it .env and filling out the dummy data with valid credentials
 2. If you do not have docker installed, now is the time to do so. You can start [here](https://docs.docker.com/get-docker/)
