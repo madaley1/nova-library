@@ -12,7 +12,7 @@ export const initialAddNewLibraryContextValue: AddNewLibraryContextState = {
   fields: {} as Record<string, FieldType>,
 };
 
-type AddNewLibraryActionTypes = 'setType' | 'setFields' | 'setContext';
+type AddNewLibraryActionTypes = 'setType' | 'setFields' | 'setContext' | 'addField';
 
 type AddNewLibraryAction = {
   type: AddNewLibraryActionTypes;
@@ -51,6 +51,8 @@ export const addNewLibraryReducer: Reducer<AddNewLibraryContextState, AddNewLibr
     case 'setContext':
       if (isDataContextState(action.data)) return { ...state, ...action.data };
       else throw new Error('Please provide the full state for setting context');
+    case 'addField':
+      return { ...state, fields: { ...state.fields, newField: 'string' } };
   }
 };
 
@@ -79,7 +81,14 @@ export const useLibraryFields = () => {
       data: newFields,
     });
   }, []);
-  return [state, setFields] as const;
+  const addField = useCallback(() => {
+    console.log(state.fields);
+    dispatch({
+      type: 'addField',
+      data: null,
+    });
+  }, []);
+  return [state, setFields, addField] as const;
 };
 
 export const useLibraryData = () => {

@@ -1,18 +1,6 @@
 import { FieldType, fieldTypes } from '@/utils/libraries/templates';
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Container,
-  FormControl,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import { AddNewLibraryContext, useLibraryData } from './AddNewLibraryContext';
+import { Box, Button, ButtonGroup, Container, MenuItem, Select, TextField } from '@mui/material';
+import { AddNewLibraryContext, useLibraryData, useLibraryFields } from './AddNewLibraryContext';
 
 type StepTwoProps = {
   continueFunction: () => void;
@@ -20,13 +8,17 @@ type StepTwoProps = {
   active: boolean;
 };
 
+const valueIsFieldType = (value: unknown): value is FieldType => fieldTypes.includes(value as FieldType);
+
 const StepTwo = (props: StepTwoProps) => {
   const [libraryState, setData] = useLibraryData();
+  const [libraryFields, setFields, addField] = useLibraryFields();
+
   return (
     <AddNewLibraryContext.Consumer>
       {(context) => {
         if (context === null) return <>Something has gone wrong, please reload and try again</>;
-        const [state, dispatch] = context;
+        const [state] = context;
         let newState = state;
 
         return (
@@ -35,18 +27,6 @@ const StepTwo = (props: StepTwoProps) => {
               .filter((entry) => entry[0] !== 'id')
               .map((field, index) => {
                 const [title, type] = field;
-                // const InputType = ({ type }: { type: fieldTypes }) => {
-                //   if (type === 'string') return <TextField type={type}></TextField>;
-                //   else if (type === 'number') return <NumberInput />;
-                //   else if (type === 'select' || type === 'multiSelect') return <Select></Select>;
-                //   else if (type === 'date') return <DateTimePicker />;
-                // };
-                // return (
-                //   <Box key={title} sx={{ display: 'flex', flexFlow: 'column', marginBottom: '1em' }}>
-                //     <FormLabel sx={{ textTransform: 'capitalize' }}>{title}</FormLabel>
-                //     <InputType type={type} />
-                //   </Box>
-                // );
                 return (
                   <Box key={index} sx={{ display: 'flex', flexFlow: 'row nowrap' }}>
                     <Box
@@ -63,10 +43,16 @@ const StepTwo = (props: StepTwoProps) => {
                         defaultValue={title}
                         onChange={(e) => {
                           const fieldEntries = Object.entries(newState.fields).map(([key, value], entry) => {
-                            if (entry === index + 1) return [e.target.value, value];
+                            if (entry === index) return [e.target.value, value];
                             else return [key, value];
                           });
-                          newState = { ...newState, fields: Object.fromEntries(fieldEntries) };
+                          const fieldEntriesObject = Object.fromEntries(fieldEntries);
+                          newState = { ...newState, fields: fieldEntriesObject };
+                          // console.log(newState);
+                        }}
+                        onBlur={() => {
+                          // console.log(newState.fields);
+                          setFields(newState.fields);
                         }}
                       ></TextField>
                     </Box>
@@ -75,12 +61,10 @@ const StepTwo = (props: StepTwoProps) => {
                         label="Field Type"
                         defaultValue={type}
                         onChange={(e) => {
-                          const valueIsFieldType = (value: unknown): value is FieldType => {
-                            return fieldTypes.includes(value as FieldType);
-                          };
                           if (valueIsFieldType(e.target.value))
                             newState = { ...newState, fields: { ...newState.fields, [title]: e.target.value } };
                         }}
+                        onBlur={() => setFields(newState.fields)}
                       >
                         {fieldTypes.map((type) => (
                           <MenuItem value={type} key={title + type} sx={{ width: '100%', textTransform: 'capitalize' }}>
@@ -92,6 +76,7 @@ const StepTwo = (props: StepTwoProps) => {
                   </Box>
                 );
               })}
+            <Button onClick={() => addField()}> Add New Row </Button>
             <ButtonGroup variant="outlined">
               <Button onClick={props.goBackFunction}>Back</Button>
               <Button

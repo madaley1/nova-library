@@ -1,13 +1,9 @@
 import Modal from '@/components/Modal';
-import { setTemplates } from '@/resources/libraryData';
-import styles from '@/styles/modal.module.scss';
 
-import { libraryTemplate } from '@/utils/libraries/templates';
 import { Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useReducer, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { AddNewLibraryContext, addNewLibraryReducer, initialAddNewLibraryContextValue } from './AddNewLibraryContext';
 import StepOne from './StepOne.component';
@@ -23,8 +19,6 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
   const [stepOneActive, setStepOneActive] = useState(true);
   const [stepTwoActive, setStepTwoActive] = useState(false);
   const [stepThreeActive, setStepThreeActive] = useState(false);
-
-  const dispatch = useDispatch();
 
   const continueToStepTwo = () => {
     setStepOneActive(false);
@@ -49,7 +43,7 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
       <Typography variant="h5" component="h2">
         Add New Library
         {(function () {
-          if (stepOneActive) return ' - Name Library';
+          if (stepOneActive) return ' - Select Template';
           if (stepTwoActive) return ' - Customize Library';
           if (stepThreeActive) return ' - Confirm Library';
         })()}
@@ -71,24 +65,10 @@ export const AddNewLibraryModal = (props: EditRowModalProps) => {
   };
 
   const footerContent = <></>;
-  const getTemplates = async () => {
-    // Needs to be fixed post-api update
-    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/libraries/create`);
-    // const templateJSON = await response.json();
-    // if (templateJSON.length > 0) {
-    //   const procesedTemplates: libraryTemplate[] = templateJSON.map((template: any) => {
-    //     const { title, fields } = template;
-    //     return { title, fields: JSON.parse(fields) };
-    //   });
-    //   dispatch(setTemplates(procesedTemplates));
-    // } else {
-    //   dispatch(setTemplates(templateJSON));
-    // }
-  };
 
-  useEffect(() => {
-    // getTemplates();
-  }, []);
+  // useEffect(() => {
+  //   // getTemplates();
+  // }, []);
 
   return (
     <Modal

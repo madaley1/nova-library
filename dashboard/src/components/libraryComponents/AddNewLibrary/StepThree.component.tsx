@@ -53,7 +53,6 @@ const StepThree = (props: StepThreeProps) => {
               <Button onClick={props.goBackFunction}>Back</Button>
               <Button
                 onClick={async () => {
-                  // Needs to be fixed post-api update
                   const rawResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/libraries/create`, {
                     method: 'POST',
                     body: JSON.stringify(state),
