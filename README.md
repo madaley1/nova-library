@@ -10,6 +10,6 @@ This is a repo that is still in development, and does not have a public image re
 2. If you do not have docker installed, now is the time to do so. You can start [here](https://docs.docker.com/get-docker/)
 3. Next, run `npm run build-all` to build the images necessary to run the app
 4. Once everything is built, run `npm run start-all` to spin up the containers
-5. Everything should be running, and you should be able to start using the frontend at https://localhost:5001, or whatever port you chose if you set it manually
+5. Everything should be running, and you should be able to start using the frontend at http://localhost:5001, or whatever port you chose if you set it manually
 
 If you have any issues with these steps, please open an issue and I'll get on it asap!
