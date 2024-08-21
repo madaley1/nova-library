@@ -56,9 +56,7 @@ const StepTwo = (props: StepTwoProps) => {
                           });
 
                           const fieldEntriesObject = Object.fromEntries(fieldEntries);
-                          console.log(fieldEntriesObject);
                           newState = { ...newState, columns: fieldEntriesObject };
-                          console.log(newState.columns);
                         }}
                         onBlur={() => {
                           setFields(newState.columns);
