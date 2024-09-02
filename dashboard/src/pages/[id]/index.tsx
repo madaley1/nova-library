@@ -5,7 +5,7 @@ import { IRootState } from '@/resources/store';
 import { parseMultiSelect } from '@/utils/libraries/multiSelect';
 import { FieldType } from '@/utils/libraries/templates';
 import { Button, Grid } from '@mui/material';
-import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridCellParams, GridColDef, GridRowSelectionModel, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 import { NextPageContext } from 'next';
 import React, { createContext, useEffect, useState } from 'react';
@@ -47,6 +47,7 @@ const processRows = (columns: Array<string>, data: Array<Array<any>>) => {
 export default function Index({ data, id }: Record<string, any>) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [addNewItemModalOpen, setAddNewItemModalOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Array<number>>([]);
   const resourceData = useSelector((state: IRootState) => state.resourceData);
   const dispatch = useDispatch();
 
@@ -88,6 +89,21 @@ export default function Index({ data, id }: Record<string, any>) {
     },
   });
 
+  const setSelectedRows = (ids: GridRowSelectionModel) => {
+    setSelectedIds([...(ids as Array<number>)]);
+  };
+
+  const deleteItems = async () => {
+    const response = await axios.delete(`${process.env.NEXT_PUBLIC_BROWSER_API_URL}/libraries/${id}/items`, {
+      data: selectedIds.map(String),
+    });
+    if (response.status === 200) {
+      const newData = resourceData.currentData.filter((item) => !selectedIds.includes(item.id));
+      dispatch(setResourceData([...newData]));
+      setSelectedIds([]);
+    }
+  };
+
   useEffect(() => {
     const columnNames = processColumnNames(data.column_data);
     const rows = processRows(columnNames, data.data);
@@ -105,6 +121,7 @@ export default function Index({ data, id }: Record<string, any>) {
             toolbar: GridToolbar,
           }}
           checkboxSelection
+          onRowSelectionModelChange={setSelectedRows}
           initialState={{
             columns: {
               columnVisibilityModel: {
@@ -120,10 +137,9 @@ export default function Index({ data, id }: Record<string, any>) {
           <Button onClick={openAddNewItemModal}>Add New Item</Button>
         </Grid>
         <Grid item>
-          <Button>Delete Selected</Button>
-        </Grid>
-        <Grid item>
-          <Button>Delete All</Button>
+          <Button disabled={selectedIds.length === 0} onClick={deleteItems}>
+            Delete Selected
+          </Button>
         </Grid>
       </Grid>
       <AddNewItemModal open={addNewItemModalOpen} closeModal={closeAddNewItemModal} />
